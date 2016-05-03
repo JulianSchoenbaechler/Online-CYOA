@@ -14,3 +14,19 @@ Team
 * Julian Schönbächler
 * Marcel Arioli
 * Michael von Ah
+
+Story
+-----
+_Coming soon..._
+
+Technical implementation
+------------------------
+This repository displays the root directory of a common webserver.
+
+__Server-side Development__
+* PHP 7
+* MySQL 5.5 Database
+
+__Client-side Development__
+* HTML 5
+* Javascript /jQuery based interface
