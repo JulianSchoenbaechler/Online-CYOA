@@ -1,7 +1,7 @@
 Multi-Oil Platforming
 =====================
 
-__Multilineares Storytelling__
+__Multilinear Storytelling__
 _Online Choose your own Adventure_
 
 __Task:__ Writing and producing an Online CYOA, including own illustrations.
