@@ -39,21 +39,21 @@
 			{
 				$success = mysqli_real_connect(
 											   $link,
-											   $host,
-											   $user,
-											   $password,
-											   $db,
-											   $port
+											   $sqlconfig['host'],
+											   $sqlconfig['username'],
+											   $sqlconfig['password'],
+											   $sqlconfig['dbname'],
+											   $sqlconfig['port']
 				);
 			}
 			else
 			{
 				$success = mysqli_real_connect(
 											   $link,
-											   $host,
-											   $user,
-											   $password,
-											   $db
+											   $sqlconfig['host'],
+											   $sqlconfig['username'],
+											   $sqlconfig['password'],
+											   $sqlconfig['dbname']
 				);
 			}
 			
