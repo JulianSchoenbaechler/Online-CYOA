@@ -19,8 +19,9 @@
 	namespace CYOA_Engine;
 	
 	// Includes
-	require_once '../Constants.php';
-	require_once 'History.php';
-	require_once 'DatabaseController.php';
+	require_once 'Constants.php';
+	require_once 'Database.php';
+	require_once 'classes/DatabaseController.php';
+	require_once 'classes/History.php';
 
 ?>

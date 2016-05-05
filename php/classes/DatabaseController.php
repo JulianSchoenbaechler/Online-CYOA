@@ -18,9 +18,6 @@
 */
 	namespace CYOA_Engine;
 	
-	// Includes
-	require_once '../Database.php';
-	
 	class DatabaseController
 	{
 		use DatabaseConnection;
