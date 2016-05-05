@@ -35,7 +35,7 @@
 		}
 		
 		// Insert row into database table
-		public function insertRow($table, $columns = array(), $values = array())
+		public function insertRow($table, $values = array())
 		{
 			// Check table name
 			if(!is_string($table))
@@ -47,54 +47,31 @@
 				$table = mysqli_real_escape_string($this->link, $table);
 			}
 			
-			// Check columns and values
-			if(count($columns) != count($values))
+			$sql1 = "INSERT INTO `$table`(";
+			$sql2 = ") VALUES (";
+			
+			foreach($values as $column => $value)
 			{
-				trigger_error("'insertRow' expected argument 1 and 2 (array) of the same length.", E_USER_WARNING);
-			}
-			
-			$sql = "INSERT INTO `$table`(";
-			
-			// Define columns to insert
-			for($i = 0;$i < count($columns);$i++)
-			{
-				$element = mysqli_real_escape_string($this->link, $columns[$i]);
-				
-				$sql .= "`$element`";
-				
-				// Add comma?
-				if(($i + 1) < count($columns))
-				{
-					$sql .= ", ";
-				}
-			}
-			
-			$sql .= ") VALUES (";
-			
-			// Values to be inserted
-			for($i = 0;$i < count($values);$i++)
-			{
-				$element = $values[$i];
+				// Define columns to insert
+				$element = mysqli_real_escape_string($this->link, $column);
+				$sql1 .= "`$element`, ";
 				
 				// Is the value a string or an integer?
-				if(is_string($element))
+				if(is_string($value))
 				{
-					$element = mysqli_real_escape_string($this->link, $values[$i]);
-					$sql .= "'$element'";
+					$element = mysqli_real_escape_string($this->link, $value);
+					$sql2 .= "'$element', ";
 				}
 				else
 				{
-					$sql .= (string)$element;
-				}
-				
-				// Add comma?
-				if(($i + 1) < count($values))
-				{
-					$sql .= ", ";
+					$sql2 .= (string)$value.", ";
 				}
 			}
 			
-			$sql .= ")";
+			// Create query
+			$sql1 = substr($sql1, 0, strlen($sql1) - 2);
+			$sql2 = substr($sql2, 0, strlen($sql2) - 2);
+			$sql = $sql1.$sql2.")";
 			
 			// Insert row
 			if(!mysqli_query($this->link, $sql))

@@ -47,19 +47,19 @@
 		}
 		
 		// Load player data
-		public function loadData()
+		public function loadData($link)
 		{
 			
 		}
 		
 		// Save player data
-		public function saveData()
+		public function saveData($link)
 		{
 			
 		}
 		
 		// Create new player data
-		public function newData()
+		public function newData($link)
 		{
 			// Check if player is named
 			if(!isset($name))
@@ -79,7 +79,8 @@
 			$this->avatar = 'noavatar';
 			
 			// Database create Player
-			$this->saveData();
+			$da = new DatabaseController($link);
+			//$da->insertRow('player', )
 		}
 	}
 	
