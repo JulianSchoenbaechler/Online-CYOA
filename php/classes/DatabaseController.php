@@ -153,6 +153,69 @@
 				printf("MYSQL: Error %s\n", mysqli_error($this->link));
 			}
 		}
+		
+		// Get row content from database table
+		public function getRow($table, $conditions = array())
+		{
+			// Check table name
+			if(!is_string($table))
+			{
+				trigger_error("'getRow' expected argument 0 to be string.", E_USER_WARNING);
+			}
+			else
+			{
+				$table = mysqli_real_escape_string($this->link, $table);
+			}
+			
+			$sql = "SELECT * FROM `$table` WHERE ";
+			
+			// For every condition
+			foreach($conditions as $column => $value)
+			{
+				// Define columns to insert
+				$element = mysqli_real_escape_string($this->link, $column);
+				$sql .= "`$element`=";
+				
+				// Is the value a string or an integer?
+				if(is_string($value))
+				{
+					$element = mysqli_real_escape_string($this->link, $value);
+					$sql .= "'$element' AND ";
+				}
+				else
+				{
+					$sql .= (string)$value." AND ";
+				}
+			}
+			
+			// Strip 'AND' from query
+			$sql = substr($sql, 0, strlen($sql) - 5);
+			$sql .= " LIMIT 1";
+			
+			$result = mysqli_query($this->link, $sql);
+			
+			// Check result
+			if(!$result)
+			{
+				printf("MYSQL: Error %s\n", mysqli_error($this->link));
+			}
+			
+			// If row was found
+			if(mysqli_num_rows($result) > 0)
+			{
+				$row = mysqli_fetch_array($result);
+				
+				mysqli_free_result($result);
+				
+				// Return database content
+				return $row;
+			}
+			else
+			{
+				// Not found a matching row
+				return null;
+			}
+		}
 	}
 	
 ?>
