@@ -18,11 +18,6 @@
 */
 	namespace CYOA_Engine;
 	
-	// Includes
-	require_once '../Constants.php';
-	require_once 'History.php';
-	require_once 'DatabaseController.php';
-	
 	final class Player
 	{
 		// Properties
