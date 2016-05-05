@@ -57,9 +57,9 @@
 		public function newData($link)
 		{
 			// Check if player is named
-			if(!isset($name))
+			if(!isset($this->name))
 			{
-				$name = 'noname';
+				$this->name = 'noname';
 			}
 			
 			// Create first history element
@@ -69,7 +69,7 @@
 			$this->history = json_encode($he->element);
 			$this->memory = json_encode(EMPTY_PROCESS);
 			$this->experience = json_encode(EMPTY_PROCESS);
-			$this->finished = false;
+			$this->finished = true;
 			$this->points = 0;
 			$this->avatar = 'noavatar';
 			
