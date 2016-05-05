@@ -47,6 +47,7 @@
 			$sql1 = "INSERT INTO `$table`(";
 			$sql2 = ") VALUES (";
 			
+			// For every value
 			foreach($values as $column => $value)
 			{
 				// Define columns to insert
@@ -71,6 +72,82 @@
 			$sql = $sql1.$sql2.")";
 			
 			// Insert row
+			if(!mysqli_query($this->link, $sql))
+			{
+				printf("MYSQL: Error %s\n", mysqli_error($this->link));
+			}
+		}
+		
+		// Update row in database table
+		public function updateRow($table, $values = array(), $conditions = array())
+		{
+			// Check table name
+			if(!is_string($table))
+			{
+				trigger_error("'updateRow' expected argument 0 to be string.", E_USER_WARNING);
+			}
+			else
+			{
+				$table = mysqli_real_escape_string($this->link, $table);
+			}
+			
+			$sql = "UPDATE `$table` SET ";
+			
+			// For every value
+			foreach($values as $column => $value)
+			{
+				// Define columns to insert
+				$element = mysqli_real_escape_string($this->link, $column);
+				$sql .= "`$element`=";
+				
+				// Is the value a string or an integer?
+				if(is_string($value))
+				{
+					$element = mysqli_real_escape_string($this->link, $value);
+					$sql .= "'$element', ";
+				}
+				else
+				{
+					$sql .= (string)$value.", ";
+				}
+			}
+			
+			// First fragment of query
+			$sql = substr($sql, 0, strlen($sql) - 2);
+			
+			// Are there conditions for updating?
+			if(count($conditions) > 0)
+			{
+				$sql .= " WHERE ";
+				
+				// For every condition
+				foreach($conditions as $column => $value)
+				{
+					// Define columns to insert
+					$element = mysqli_real_escape_string($this->link, $column);
+					$sql .= "`$element`=";
+					
+					// Is the value a string or an integer?
+					if(is_string($value))
+					{
+						$element = mysqli_real_escape_string($this->link, $value);
+						$sql .= "'$element' AND ";
+					}
+					else
+					{
+						$sql .= (string)$value." AND ";
+					}
+				}
+				
+				// Second fragment of query
+				$sql = substr($sql, 0, strlen($sql) - 5);
+			}
+			else
+			{
+				$sql .= " WHERE 1";
+			}
+			
+			// Update row
 			if(!mysqli_query($this->link, $sql))
 			{
 				printf("MYSQL: Error %s\n", mysqli_error($this->link));
