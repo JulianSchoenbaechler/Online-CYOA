@@ -29,15 +29,9 @@
 		private $link;
 		
 		// Constructor
-		public function __construct()
+		public function __construct($link)
 		{
-			$this->link = $this->connectDB();
-		}
-		
-		// Deconstructor
-		public function __destruct()
-		{
-			mysqli_close($link);
+			$this->link = $link;
 		}
 		
 		// Insert row into database table
