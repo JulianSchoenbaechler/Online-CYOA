@@ -80,7 +80,16 @@
 			
 			// Database create Player
 			$da = new DatabaseController($link);
-			//$da->insertRow('player', )
+			$insert = array('id' => $this->id,
+							'name' => $this->name,
+							'history' => $this->history,
+							'memory' => $this->memory,
+							'experience' => $this->experience,
+							'points' => $this->points,
+							'avatar' => $this->avatar,
+							'finished' => $this->finished ? 1 : 0
+							);
+			$da->insertRow('player', $insert);
 		}
 	}
 	
