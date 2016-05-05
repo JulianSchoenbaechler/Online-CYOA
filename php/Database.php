@@ -20,7 +20,8 @@
 	
 	trait DatabaseConnection
 	{
-		private function connectDB()
+		// Open connection
+		public static function connect()
 		{
 			// Database config
 			$sqlconfig = array();
@@ -73,6 +74,12 @@
 			}
 			
 			return $link;
+		}
+		
+		// Close specific connection
+		public static function disconnect($link)
+		{
+			mysqli_close($link);
 		}
 	}
 	
