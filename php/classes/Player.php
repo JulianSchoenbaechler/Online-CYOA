@@ -50,7 +50,20 @@
 		// Save player data
 		public function saveData($link)
 		{
+			// Database update Player
+			$da = new DatabaseController($link);
+			$update = array('id' => $this->id,
+							'name' => $this->name,
+							'history' => $this->history,
+							'memory' => $this->memory,
+							'experience' => $this->experience,
+							'points' => $this->points,
+							'avatar' => $this->avatar,
+							'finished' => $this->finished ? 1 : 0
+							);
+			$da->updateRow('player', $update, array('id' => $this->id));
 			
+			unset($da);
 		}
 		
 		// Create new player data
@@ -85,6 +98,8 @@
 							'finished' => $this->finished ? 1 : 0
 							);
 			$da->insertRow('player', $insert);
+			
+			unset($da);
 		}
 	}
 	
