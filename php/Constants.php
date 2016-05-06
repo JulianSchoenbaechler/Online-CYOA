@@ -24,4 +24,11 @@
 								  'outro' => false,
 								  ));
 	
+	// Empty history (associative array)
+	define('EMPTY_HISTORY', array(
+								  'layer' => false,
+								  'position' => false,
+								  'branches' => 'branch0.png'
+								  ));
+	
 ?>

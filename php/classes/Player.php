@@ -22,7 +22,7 @@
 	{
 		// Properties
 		private $id;				// ID of the player
-		private $history;			// Displayed history, the player went through
+		private $history;			// Array / Displayed history, the player went through
 		private $memory;			// Associative Array / Bool hash table of actions, the character remembers
 		private $experience;		// Associative Array / Bool hash table of actions, the player has done
 		private $finished;			// Finished game? / Ready to start game?
@@ -50,9 +50,9 @@
 			// Load player data
 			if(!is_null($dbArray))
 			{
-				$this->history = $dbArray['history'];
-				$this->memory = $dbArray['memory'];
-				$this->experience = $dbArray['experience'];
+				$this->history = json_decode($dbArray['history']);
+				$this->memory = json_decode($dbArray['memory']);
+				$this->experience = json_decode($dbArray['experience']);
 				$this->points = $dbArray['points'];
 				$this->avatar = $dbArray['avatar'];
 				
@@ -74,9 +74,9 @@
 			$da = new DatabaseController($link);
 			$update = array('id' => $this->id,
 							'name' => $this->name,
-							'history' => $this->history,
-							'memory' => $this->memory,
-							'experience' => $this->experience,
+							'history' => json_encode($this->history),
+							'memory' => json_encode($this->memory),
+							'experience' => json_encode($this->experience),
 							'points' => $this->points,
 							'avatar' => $this->avatar,
 							'finished' => $this->finished ? 1 : 0
@@ -95,13 +95,10 @@
 				$this->name = 'noname';
 			}
 			
-			// Create first history element
-			$he = new History(5, 0, 'branch0.png');
-			
 			// Predefine values
-			$this->history = json_encode($he->element);
-			$this->memory = json_encode(EMPTY_PROCESS);
-			$this->experience = json_encode(EMPTY_PROCESS);
+			$this->history = array(EMPTY_HISTORY, EMPTY_HISTORY);
+			$this->memory = EMPTY_PROCESS;
+			$this->experience = EMPTY_PROCESS;
 			$this->finished = true;
 			$this->points = 0;
 			$this->avatar = 'noavatar';
@@ -110,9 +107,9 @@
 			$da = new DatabaseController($link);
 			$insert = array('id' => $this->id,
 							'name' => $this->name,
-							'history' => $this->history,
-							'memory' => $this->memory,
-							'experience' => $this->experience,
+							'history' => json_encode($this->history),
+							'memory' => json_encode($this->memory),
+							'experience' => json_encode($this->experience),
 							'points' => $this->points,
 							'avatar' => $this->avatar,
 							'finished' => $this->finished ? 1 : 0

@@ -23,6 +23,5 @@
 	require_once 'Database.php';
 	require_once 'classes/DatabaseController.php';
 	require_once 'classes/Player.php';
-	require_once 'classes/History.php';
 
 ?>
