@@ -44,7 +44,27 @@
 		// Load player data
 		public function loadData($link)
 		{
+			$da = new DatabaseController($link);
+			$dbArray = $da->getRow('player', array('id' => $this->id));
 			
+			// Load player data
+			if(!is_null($dbArray))
+			{
+				$this->history = $dbArray['history'];
+				$this->memory = $dbArray['memory'];
+				$this->experience = $dbArray['experience'];
+				$this->points = $dbArray['points'];
+				$this->avatar = $dbArray['avatar'];
+				
+				if($dbArray['finished'] == 0)
+				{
+					$this->finished = false;
+				}
+				else
+				{
+					$this->finished = true;
+				}
+			}
 		}
 		
 		// Save player data
