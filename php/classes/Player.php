@@ -121,6 +121,31 @@
 			
 			unset($da);
 		}
+		
+		// Set boolean of specific milestone
+		// 'remember' defines the memory of the character:
+		// - true		Character remembers this action
+		// - false		Character cannot remember this action
+		public function reachMilestone($milestone, $remember = false)
+		{
+			// Check milestone name
+			if(!is_string($milestone))
+			{
+				trigger_error("'reachMilestone' expected argument 0 to be string.", E_USER_WARNING);
+			}
+			
+			// Check for milestone state
+			if($this->experience[$milestone] === false)
+			{
+				$this->experience[$milestone] = true;
+				
+				// Character remembers?
+				if($remember)
+				{
+					$this->memory[$milestone] = true;
+				}
+			}
+		}
 	}
 	
 ?>
