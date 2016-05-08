@@ -26,9 +26,10 @@
 	
 	// Empty history (associative array)
 	define('EMPTY_HISTORY', array(
-								  'layer' => false,
-								  'position' => false,
-								  'branches' => 'branch0.png'
+								  'layer' => 0,											// Position history element: Y axis
+								  'position' => 0,										// Position history element: X axis
+								  'branches' => 'branch0.png',							// Image file of the following branching
+								  'description' => 'The first history element...'		// Description of the done action
 								  ));
 	
 ?>
