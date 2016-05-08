@@ -30,11 +30,6 @@
 		private $avatar;			// Associative Array of images which are used for the avatar picture
 		public $name;				// Name of the player
 		
-		// History structure
-		// Key: Story fragment ID
-		// Value: Properties (Associative Array)
-		//			- 
-		
 		// Class constructor
 		public function __construct($id)
 		{
@@ -44,8 +39,8 @@
 		// Load player data
 		public function loadData($link)
 		{
-			$da = new DatabaseController($link);
-			$dbArray = $da->getRow('player', array('id' => $this->id));
+			$dc = new DatabaseController($link);
+			$dbArray = $dc->getRow('player', array('id' => $this->id));
 			
 			// Load player data
 			if(!is_null($dbArray))
@@ -53,8 +48,8 @@
 				$this->history = json_decode($dbArray['history']);
 				$this->memory = json_decode($dbArray['memory']);
 				$this->experience = json_decode($dbArray['experience']);
-				$this->points = $dbArray['points'];
-				$this->avatar = $dbArray['avatar'];
+				$this->points = (int)$dbArray['points'];
+				$this->avatar = json_decode($dbArray['avatar']);
 				
 				if($dbArray['finished'] == 0)
 				{
@@ -65,25 +60,27 @@
 					$this->finished = true;
 				}
 			}
+			
+			unset($dc);
 		}
 		
 		// Save player data
 		public function saveData($link)
 		{
 			// Database update Player
-			$da = new DatabaseController($link);
+			$dc = new DatabaseController($link);
 			$update = array('id' => $this->id,
 							'name' => $this->name,
 							'history' => json_encode($this->history),
 							'memory' => json_encode($this->memory),
 							'experience' => json_encode($this->experience),
 							'points' => $this->points,
-							'avatar' => $this->avatar,
+							'avatar' => json_encode($this->avatar),
 							'finished' => $this->finished ? 1 : 0
 							);
-			$da->updateRow('player', $update, array('id' => $this->id));
+			$dc->updateRow('player', $update, array('id' => $this->id));
 			
-			unset($da);
+			unset($dc);
 		}
 		
 		// Create new player data
@@ -104,7 +101,7 @@
 			$this->avatar = 'noavatar';
 			
 			// Database create Player
-			$da = new DatabaseController($link);
+			$dc = new DatabaseController($link);
 			$insert = array('id' => $this->id,
 							'name' => $this->name,
 							'history' => json_encode($this->history),
@@ -114,9 +111,9 @@
 							'avatar' => $this->avatar,
 							'finished' => $this->finished ? 1 : 0
 							);
-			$da->insertRow('player', $insert);
+			$dc->insertRow('player', $insert);
 			
-			unset($da);
+			unset($dc);
 		}
 		
 		// Set boolean of specific milestone
