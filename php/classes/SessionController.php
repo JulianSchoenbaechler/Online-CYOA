@@ -35,12 +35,12 @@
 			
 			if(isset($_SESSION['CYOA_Engine']['id']))
 			{
-				$id = $_SESSION['CYOA_Engine']['id'];
+				self::$id = $_SESSION['CYOA_Engine']['id'];
 			}
 			
 			session_write_close();
 			
-			$initialized = true;
+			self::$initialized = true;
 		}
 		
 		// Get session id
