@@ -54,11 +54,11 @@
 			// Check arguments
 			if(!is_string($title))
 			{
-				trigger_error("'create' expected argument 1 to be string.", E_USER_WARNING);
+				trigger_error("[Story] 'create' expected argument 1 to be string.", E_USER_WARNING);
 			}
 			if(!is_string($text))
 			{
-				trigger_error("'create' expected argument 2 to be string.", E_USER_WARNING);
+				trigger_error("[Story] 'create' expected argument 2 to be string.", E_USER_WARNING);
 			}
 			
 			// Update private variables

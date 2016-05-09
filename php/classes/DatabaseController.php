@@ -37,7 +37,7 @@
 			// Check table name
 			if(!is_string($table))
 			{
-				trigger_error("'insertRow' expected argument 0 to be string.", E_USER_WARNING);
+				trigger_error("[DatabaseController] 'insertRow' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			else
 			{
@@ -84,7 +84,7 @@
 			// Check table name
 			if(!is_string($table))
 			{
-				trigger_error("'updateRow' expected argument 0 to be string.", E_USER_WARNING);
+				trigger_error("[DatabaseController] 'updateRow' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			else
 			{
@@ -160,7 +160,7 @@
 			// Check table name
 			if(!is_string($table))
 			{
-				trigger_error("'getRow' expected argument 0 to be string.", E_USER_WARNING);
+				trigger_error("[DatabaseController] 'getRow' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			else
 			{

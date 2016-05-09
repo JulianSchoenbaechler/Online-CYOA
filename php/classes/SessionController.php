@@ -76,7 +76,7 @@
 			// Check parameter name
 			if(!is_string($parameter))
 			{
-				trigger_error("'getParameter' expected argument 0 to be string.", E_USER_WARNING);
+				trigger_error("[SessionController] 'getParameter' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			
 			// Check session parameter and return
@@ -98,11 +98,11 @@
 			// Check parameter name and value
 			if(!is_string($parameter))
 			{
-				trigger_error("'setParameter' expected argument 0 to be string.", E_USER_WARNING);
+				trigger_error("'[SessionController] setParameter' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			if(!is_string($value))
 			{
-				trigger_error("'setParameter' expected argument 1 to be string.", E_USER_WARNING);
+				trigger_error("'[SessionController] setParameter' expected argument 1 to be string.", E_USER_WARNING);
 			}
 			
 			// Set session parameter

@@ -125,7 +125,7 @@
 			// Check milestone name
 			if(!is_string($milestone))
 			{
-				trigger_error("'reachMilestone' expected argument 0 to be string.", E_USER_WARNING);
+				trigger_error("[Player] 'reachMilestone' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			
 			// Check for milestone state
@@ -147,27 +147,27 @@
 			// Check function arguments
 			if(!is_int($layer))
 			{
-				trigger_error("'addHistoryElement' expected argument 0 to be integer.", E_USER_WARNING);
+				trigger_error("[Player] 'addHistoryElement' expected argument 0 to be integer.", E_USER_WARNING);
 			}
 			if(!is_int($position))
 			{
-				trigger_error("'addHistoryElement' expected argument 1 to be integer.", E_USER_WARNING);
+				trigger_error("[Player] 'addHistoryElement' expected argument 1 to be integer.", E_USER_WARNING);
 			}
 			if(!is_string($branches))
 			{
-				trigger_error("'addHistoryElement' expected argument 2 to be string.", E_USER_WARNING);
+				trigger_error("[Player] 'addHistoryElement' expected argument 2 to be string.", E_USER_WARNING);
 			}
 			else
 			{
 				// Only accept PNG-images
 				if(strpos($branches, '.png') === false)
 				{
-					trigger_error("'addHistoryElement' expected argument 2 to be a filename with the extension '.png'.", E_USER_WARNING);
+					trigger_error("[Player] 'addHistoryElement' expected argument 2 to be a filename with the extension '.png'.", E_USER_WARNING);
 				}
 			}
 			if(!is_string($description))
 			{
-				trigger_error("'addHistoryElement' expected argument 3 to be string.", E_USER_WARNING);
+				trigger_error("[Player] 'addHistoryElement' expected argument 3 to be string.", E_USER_WARNING);
 			}
 			
 			// Add history element
