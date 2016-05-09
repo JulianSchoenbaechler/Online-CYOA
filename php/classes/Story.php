@@ -11,7 +11,7 @@
 *
 * Author(s):
 * Arno Justus
-* Julian Schönbächler
+* Julian Schoenbaechler
 * Marcel Arioli
 * Michael von Ah
 *
