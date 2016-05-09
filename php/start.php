@@ -44,14 +44,40 @@
 	// Include library files
 	require_once 'Includes.php';
 	
+	// Get arguments
+	$game = trim($_GET['game']);
+	$player = null;
+	
 	// Open database
 	$link = DatabaseController::connect();
 	
-	$player = new Player(generateID());
-	$player->newData($link);
+	// New game?
+	if($game == 'new')
+	{
+		$newID = generateID();
+		$player = new Player($newID);
+		$player->newData($link);
+		SessionController::setSessionID($newID);
+	}
+	else
+	{
+		// Check sessions
+		if(SessionController::getSessionID() === false)
+		{
+			// No saved game for this client -> create new
+			$newID = generateID();
+			$player = new Player($newID);
+			$player->newData($link);
+			SessionController::setSessionID($newID);
+		}
+	}
 	
 	// Close database
 	DatabaseController::disconnect();
 	unset($link);
+	
+	// Forwarding to gameplay site
+	header("Location: game.php");
+	exit();
 	
 ?>
