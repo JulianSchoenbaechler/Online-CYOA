@@ -77,7 +77,7 @@
 	unset($link);
 	
 	// Forwarding to gameplay site
-	header("Location: game.php");
+	//header("Location: ../game.html");
 	exit();
 	
 ?>
