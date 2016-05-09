@@ -25,7 +25,7 @@
 		private $history;			// Array / Displayed history, the player went through
 		private $memory;			// Associative Array / Bool hash table of actions, the character remembers
 		private $experience;		// Associative Array / Bool hash table of actions, the player has done
-		private $finished;			// Finished game? / Ready to start game?
+		public $finished;			// Finished game? / Ready to start game?
 		private $points;			// Counting points...
 		private $avatar;			// Associative Array of images which are used for the avatar picture
 		public $name;				// Name of the player
