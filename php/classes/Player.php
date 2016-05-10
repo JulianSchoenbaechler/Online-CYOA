@@ -46,6 +46,7 @@
 			// Load player data
 			if(!is_null($dbArray))
 			{
+				$this->name = (string)$dbArray['name'];
 				$this->history = json_decode($dbArray['history']);
 				$this->memory = json_decode($dbArray['memory']);
 				$this->experience = json_decode($dbArray['experience']);
@@ -72,14 +73,14 @@
 			// Database update Player
 			$dc = new DatabaseController($link);
 			$update = array('id' => $this->id,
-							'name' => $this->name,
+							'name' => (string)$this->name,
 							'history' => json_encode($this->history),
 							'memory' => json_encode($this->memory),
 							'experience' => json_encode($this->experience),
-							'points' => $this->points,
+							'points' => (int)$this->points,
 							'avatar' => json_encode($this->avatar),
 							'finished' => $this->finished ? 1 : 0,
-							'fragment' => $this->fragment
+							'fragment' => (string)$this->fragment
 							);
 			$dc->updateRow('player', $update, array('id' => $this->id));
 			
@@ -107,13 +108,14 @@
 			// Database create Player
 			$dc = new DatabaseController($link);
 			$insert = array('id' => $this->id,
-							'name' => $this->name,
+							'name' => (string)$this->name,
 							'history' => json_encode($this->history),
 							'memory' => json_encode($this->memory),
 							'experience' => json_encode($this->experience),
-							'points' => $this->points,
-							'avatar' => $this->avatar,
-							'finished' => $this->finished ? 1 : 0
+							'points' => (int)$this->points,
+							'avatar' => json_encode($this->avatar),
+							'finished' => $this->finished ? 1 : 0,
+							'fragment' => (string)$this->fragment
 							);
 			$dc->insertRow('player', $insert);
 			
