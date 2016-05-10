@@ -22,7 +22,7 @@
 	{
 		// Properties
 		private $id;				// ID of the player
-		private $history;			// Array / Displayed history, the player went through
+		private $history;			// Associative Array / Displayed history, the player went through
 		private $memory;			// Associative Array / Bool hash table of actions, the character remembers
 		private $experience;		// Associative Array / Bool hash table of actions, the player has done
 		public $finished;			// Finished game? / Ready to start game?
@@ -93,7 +93,7 @@
 			}
 			
 			// Predefine values
-			$this->history = array(EMPTY_HISTORY);
+			$this->history = array();
 			$this->memory = EMPTY_PROCESS;
 			$this->experience = EMPTY_PROCESS;
 			$this->finished = true;
@@ -142,41 +142,30 @@
 		}
 		
 		// Add a new history element
-		public function addHistoryElement($layer, $position, $branches, $description)
+		public function addHistoryElement($id, $link)
 		{
 			// Check function arguments
-			if(!is_int($layer))
+			if(!is_int($id))
 			{
 				trigger_error("[Player] 'addHistoryElement' expected argument 0 to be integer.", E_USER_WARNING);
 			}
-			if(!is_int($position))
+			
+			// Check if history element already loaded
+			foreach($this->history as $element)
 			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 1 to be integer.", E_USER_WARNING);
-			}
-			if(!is_string($branches))
-			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 2 to be string.", E_USER_WARNING);
-			}
-			else
-			{
-				// Only accept PNG-images
-				if(strpos($branches, '.png') === false)
+				if($element['id'] == $id)
 				{
-					trigger_error("[Player] 'addHistoryElement' expected argument 2 to be a filename with the extension '.png'.", E_USER_WARNING);
+					return;
 				}
 			}
-			if(!is_string($description))
-			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 3 to be string.", E_USER_WARNING);
-			}
+			
+			// Get attributes from history elements from database
+			$dc = new DatabaseController($link);
 			
 			// Add history element
-			array_push($this->history, array(
-											 'layer' => $layer,
-											 'position' => $position,
-											 'branches' => $branches,
-											 'description' => $description
-											));
+			array_push($this->history, getRow('history', array('id' => $id)));
+			
+			unset($dc);
 		}
 	}
 	
