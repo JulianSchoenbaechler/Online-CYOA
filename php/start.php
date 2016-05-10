@@ -59,7 +59,7 @@
 		$player->newData($link);
 		SessionController::setSessionID($newID);
 	}
-	else
+	else if($game == 'load')
 	{
 		// Check sessions
 		if(SessionController::getSessionID() === false)
@@ -70,6 +70,16 @@
 			$player->newData($link);
 			SessionController::setSessionID($newID);
 		}
+	}
+	else
+	{
+		// Close database
+		DatabaseController::disconnect();
+		unset($link);
+		
+		// Return to index page
+		header("Location: ../index.html");
+		exit();
 	}
 	
 	// Close database

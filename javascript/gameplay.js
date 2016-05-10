@@ -19,7 +19,7 @@
 // When document ready
 $(document).ready(function() {
 	
-	$.post("php/game.php", { task: "start" }, function(fragment) {
+	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
 		$("#title").html(fragment.title);
 		$("#text").html(fragment.text);
