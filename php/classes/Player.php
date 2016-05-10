@@ -26,6 +26,7 @@
 		private $memory;			// Associative Array / Bool hash table of actions, the character remembers
 		private $experience;		// Associative Array / Bool hash table of actions, the player has done
 		public $finished;			// Finished game? / Ready to start game?
+		public $fragment;			// Id of the current story-fragment.
 		private $points;			// Counting points...
 		private $avatar;			// Associative Array of images which are used for the avatar picture
 		public $name;				// Name of the player
@@ -50,6 +51,7 @@
 				$this->experience = json_decode($dbArray['experience']);
 				$this->points = (int)$dbArray['points'];
 				$this->avatar = json_decode($dbArray['avatar']);
+				$this->fragment = (string)$dbArray['fragment'];
 				
 				if($dbArray['finished'] == 0)
 				{
@@ -76,7 +78,8 @@
 							'experience' => json_encode($this->experience),
 							'points' => $this->points,
 							'avatar' => json_encode($this->avatar),
-							'finished' => $this->finished ? 1 : 0
+							'finished' => $this->finished ? 1 : 0,
+							'fragment' => $this->fragment
 							);
 			$dc->updateRow('player', $update, array('id' => $this->id));
 			
@@ -99,6 +102,7 @@
 			$this->finished = true;
 			$this->points = 0;
 			$this->avatar = 'noavatar';
+			$this->fragment = 'start';
 			
 			// Database create Player
 			$dc = new DatabaseController($link);
