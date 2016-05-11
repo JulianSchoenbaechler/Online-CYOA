@@ -62,9 +62,17 @@
 				{
 					$this->finished = true;
 				}
+				
+				unset($dc);
+				
+				// Found player in database
+				return true;
 			}
 			
 			unset($dc);
+			
+			// No player with this id in database
+			return false;
 		}
 		
 		// Save player data
