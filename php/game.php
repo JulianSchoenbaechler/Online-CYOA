@@ -32,39 +32,54 @@
 		
 		// Create Player instance and load its data
 		$player = new Player(SessionController::getSessionID());
-		$player->loadData($link);
 		
-		$dc = new DatabaseController($link);
-		
-		// Resolve task
-		switch($task)
+		// Player exists in database?
+		if($player->loadData($link))
 		{
-			// Start game
-			case 'reload':
-				// New start of a game?
-				if($player->finished)
-				{
-					$player->finished = false;
-					$player->saveData($link);
-					
-					echo json_encode($dc->getRow('story', array('id' => 'start')));
-				}
-				else
-				{
-					// Load last story fragment of player
-					echo json_encode($dc->getRow('story', array('id' => $player->fragment)));
-				}
-				break;
+			$dc = new DatabaseController($link);
 			
-			default:
-				break;
+			// Resolve task
+			switch($task)
+			{
+				// Start game
+				case 'reload':
+					// New start of a game?
+					if($player->finished)
+					{
+						$player->finished = false;
+						$player->saveData($link);
+						
+						echo json_encode($dc->getRow('story', array('id' => 'start')));
+					}
+					else
+					{
+						// Load last story fragment of player
+						echo json_encode($dc->getRow('story', array('id' => $player->fragment)));
+					}
+					break;
+				
+				default:
+					break;
+			}
+			
+			unset($dc);
 		}
-		
-		unset($dc);
+		else
+		{
+			// Tell client to logout
+			echo json_encode('logout');
+			SessionController::destroySession();
+		}
 		
 		// Close database
 		DatabaseController::disconnect();
 		unset($link);
+	}
+	else
+	{
+		// Tell client to logout
+		echo json_encode('logout');
+		SessionController::destroySession();
 	}
 	
 	exit();

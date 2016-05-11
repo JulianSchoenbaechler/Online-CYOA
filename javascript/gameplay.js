@@ -21,14 +21,23 @@ $(document).ready(function() {
 	
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
-		$("#title").html(fragment.title);
-		$("#text").html(fragment.text);
+		if(fragment != "logout") {
+			
+			$("#title").html(fragment.title);
+			$("#text").html(fragment.text);
+			
+			$.each($.parseJSON(fragment.answers), function(i, object) {
+				
+				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+				
+			});
 		
-		$.each($.parseJSON(fragment.answers), function(i, object) {
-			
-			$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
-			
-		});
+		}
+		else
+		{
+			// Redirect to index page
+			window.location.assign("index.html");
+		}
 		
 	}, "json");
 	
