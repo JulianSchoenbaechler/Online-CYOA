@@ -16,6 +16,37 @@
 *
 */
 
+// Player has clicked an answer / option
+function goto(answerID) {
+	
+	$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+		
+		if(fragment != "logout") {
+			
+			$("#title").html(fragment.title);
+			$("#text").html(fragment.text);
+			
+			// Delete existing answer links
+			$("#answers").html(' ');
+			
+			// Resolve new answers
+			$.each($.parseJSON(fragment.answers), function(i, object) {
+				
+				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+				
+			});
+		
+		}
+		else
+		{
+			// Redirect to index page
+			window.location.assign("index.html");
+		}
+		
+	}, "json");
+	
+}
+
 // When document ready
 $(document).ready(function() {
 	

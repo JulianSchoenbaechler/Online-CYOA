@@ -41,7 +41,7 @@
 			// Resolve task
 			switch($task)
 			{
-				// Start game
+				// Start / load game
 				case 'reload':
 					// New start of a game?
 					if($player->finished)
@@ -55,6 +55,22 @@
 					{
 						// Load last story fragment of player
 						echo json_encode($dc->getRow('story', array('id' => $player->fragment)));
+					}
+					break;
+				
+				// Player has chosen an answer /option
+				case 'answer':
+					// Received an id?
+					if(isset($_POST['id']))
+					{
+						$id = trim($_POST['id']);
+						
+						// Change current fragment for player
+						$player->fragment = $id;
+						$player->saveData($link);
+						
+						// Load this story fragment
+						echo json_encode($dc->getRow('story', array('id' => $id)));
 					}
 					break;
 				
