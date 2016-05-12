@@ -21,6 +21,7 @@ function goto(answerID) {
 	
 	$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
 		
+		// Still logged in?
 		if(fragment != "logout") {
 			
 			$("#title").html(fragment.title);
@@ -52,11 +53,13 @@ $(document).ready(function() {
 	
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
+		// Still logged in?
 		if(fragment != "logout") {
 			
 			$("#title").html(fragment.title);
 			$("#text").html(fragment.text);
 			
+			// Resolve new answers
 			$.each($.parseJSON(fragment.answers), function(i, object) {
 				
 				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
