@@ -24,16 +24,21 @@ function goto(answerID) {
 		// Still logged in?
 		if(fragment != "logout") {
 			
-			$("#title").html(fragment.title);
-			$("#text").html(fragment.text);
-			
-			// Delete existing answer links
-			$("#answers").html(' ');
-			
-			// Resolve new answers
-			$.each($.parseJSON(fragment.answers), function(i, object) {
+			// Load HTML template
+			$("body").load("template/" + fragment.template + ".html", function() {
 				
-				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+				$("#title").html(fragment.title);
+				$("#text").html(fragment.text);
+				
+				// Delete existing answer links
+				$("#answers").html(' ');
+				
+				// Resolve new answers
+				$.each($.parseJSON(fragment.answers), function(i, object) {
+					
+					$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+					
+				});
 				
 			});
 		
@@ -56,13 +61,21 @@ $(document).ready(function() {
 		// Still logged in?
 		if(fragment != "logout") {
 			
-			$("#title").html(fragment.title);
-			$("#text").html(fragment.text);
-			
-			// Resolve new answers
-			$.each($.parseJSON(fragment.answers), function(i, object) {
+			// Load HTML template
+			$("body").load("template/" + fragment.template + ".html", function() {
 				
-				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+				$("#title").html(fragment.title);
+				$("#text").html(fragment.text);
+				
+				// Delete existing answer links
+				$("#answers").html(' ');
+				
+				// Resolve new answers
+				$.each($.parseJSON(fragment.answers), function(i, object) {
+					
+					$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+					
+				});
 				
 			});
 		

@@ -18,6 +18,23 @@
 */
 	namespace CYOA_Engine;
 	
+	// Function to resolve template
+	function template($fragment)
+	{
+		switch($fragment)
+		{
+			case 'test':
+				return 'bookshelf';
+				break;
+			
+			default:
+				return 'standard';
+				break;
+		}
+	}
+	
+	
+	
 	// Include library files
 	require_once 'Includes.php';
 	
@@ -49,12 +66,18 @@
 						$player->finished = false;
 						$player->saveData($link);
 						
-						echo json_encode($dc->getRow('story', array('id' => 'start')));
+						$row = $dc->getRow('story', array('id' => 'start'));
+						$row['template'] = template('start');
+						
+						echo json_encode($row);
 					}
 					else
 					{
 						// Load last story fragment of player
-						echo json_encode($dc->getRow('story', array('id' => $player->fragment)));
+						$row = $dc->getRow('story', array('id' => $player->fragment));
+						$row['template'] = template($player->fragment);
+						
+						echo json_encode($row);
 					}
 					break;
 				
@@ -69,8 +92,12 @@
 						$player->fragment = $id;
 						$player->saveData($link);
 						
+						// Load last story fragment of player
+						$row = $dc->getRow('story', array('id' => $id));
+						$row['template'] = template($id);
+						
 						// Load this story fragment
-						echo json_encode($dc->getRow('story', array('id' => $id)));
+						echo json_encode($row);
 					}
 					break;
 				
