@@ -22,10 +22,11 @@
 	{
 		// Properties
 		private $id;				// ID of the player
-		private $history;			// Array / Displayed history, the player went through
+		private $history;			// Associative Array / Displayed history, the player went through
 		private $memory;			// Associative Array / Bool hash table of actions, the character remembers
 		private $experience;		// Associative Array / Bool hash table of actions, the player has done
-		private $finished;			// Finished game? / Ready to start game?
+		public $finished;			// Finished game? / Ready to start game?
+		public $fragment;			// Id of the current story-fragment.
 		private $points;			// Counting points...
 		private $avatar;			// Associative Array of images which are used for the avatar picture
 		public $name;				// Name of the player
@@ -45,11 +46,13 @@
 			// Load player data
 			if(!is_null($dbArray))
 			{
+				$this->name = (string)$dbArray['name'];
 				$this->history = json_decode($dbArray['history']);
 				$this->memory = json_decode($dbArray['memory']);
 				$this->experience = json_decode($dbArray['experience']);
 				$this->points = (int)$dbArray['points'];
 				$this->avatar = json_decode($dbArray['avatar']);
+				$this->fragment = (string)$dbArray['fragment'];
 				
 				if($dbArray['finished'] == 0)
 				{
@@ -59,9 +62,17 @@
 				{
 					$this->finished = true;
 				}
+				
+				unset($dc);
+				
+				// Found player in database
+				return true;
 			}
 			
 			unset($dc);
+			
+			// No player with this id in database
+			return false;
 		}
 		
 		// Save player data
@@ -70,13 +81,14 @@
 			// Database update Player
 			$dc = new DatabaseController($link);
 			$update = array('id' => $this->id,
-							'name' => $this->name,
+							'name' => (string)$this->name,
 							'history' => json_encode($this->history),
 							'memory' => json_encode($this->memory),
 							'experience' => json_encode($this->experience),
-							'points' => $this->points,
+							'points' => (int)$this->points,
 							'avatar' => json_encode($this->avatar),
-							'finished' => $this->finished ? 1 : 0
+							'finished' => $this->finished ? 1 : 0,
+							'fragment' => (string)$this->fragment
 							);
 			$dc->updateRow('player', $update, array('id' => $this->id));
 			
@@ -93,23 +105,25 @@
 			}
 			
 			// Predefine values
-			$this->history = array(EMPTY_HISTORY);
+			$this->history = array();
 			$this->memory = EMPTY_PROCESS;
 			$this->experience = EMPTY_PROCESS;
 			$this->finished = true;
 			$this->points = 0;
 			$this->avatar = 'noavatar';
+			$this->fragment = 'start';
 			
 			// Database create Player
 			$dc = new DatabaseController($link);
 			$insert = array('id' => $this->id,
-							'name' => $this->name,
+							'name' => (string)$this->name,
 							'history' => json_encode($this->history),
 							'memory' => json_encode($this->memory),
 							'experience' => json_encode($this->experience),
-							'points' => $this->points,
-							'avatar' => $this->avatar,
-							'finished' => $this->finished ? 1 : 0
+							'points' => (int)$this->points,
+							'avatar' => json_encode($this->avatar),
+							'finished' => $this->finished ? 1 : 0,
+							'fragment' => (string)$this->fragment
 							);
 			$dc->insertRow('player', $insert);
 			
@@ -142,41 +156,30 @@
 		}
 		
 		// Add a new history element
-		public function addHistoryElement($layer, $position, $branches, $description)
+		public function addHistoryElement($id, $link)
 		{
 			// Check function arguments
-			if(!is_int($layer))
+			if(!is_int($id))
 			{
 				trigger_error("[Player] 'addHistoryElement' expected argument 0 to be integer.", E_USER_WARNING);
 			}
-			if(!is_int($position))
+			
+			// Check if history element already loaded
+			foreach($this->history as $element)
 			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 1 to be integer.", E_USER_WARNING);
-			}
-			if(!is_string($branches))
-			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 2 to be string.", E_USER_WARNING);
-			}
-			else
-			{
-				// Only accept PNG-images
-				if(strpos($branches, '.png') === false)
+				if($element['id'] == $id)
 				{
-					trigger_error("[Player] 'addHistoryElement' expected argument 2 to be a filename with the extension '.png'.", E_USER_WARNING);
+					return;
 				}
 			}
-			if(!is_string($description))
-			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 3 to be string.", E_USER_WARNING);
-			}
+			
+			// Get attributes from history elements from database
+			$dc = new DatabaseController($link);
 			
 			// Add history element
-			array_push($this->history, array(
-											 'layer' => $layer,
-											 'position' => $position,
-											 'branches' => $branches,
-											 'description' => $description
-											));
+			array_push($this->history, getRow('history', array('id' => $id)));
+			
+			unset($dc);
 		}
 	}
 	

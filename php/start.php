@@ -59,7 +59,7 @@
 		$player->newData($link);
 		SessionController::setSessionID($newID);
 	}
-	else
+	else if($game == 'load')
 	{
 		// Check sessions
 		if(SessionController::getSessionID() === false)
@@ -71,13 +71,23 @@
 			SessionController::setSessionID($newID);
 		}
 	}
+	else
+	{
+		// Close database
+		DatabaseController::disconnect();
+		unset($link);
+		
+		// Return to index page
+		header("Location: ../index.html");
+		exit();
+	}
 	
 	// Close database
 	DatabaseController::disconnect();
 	unset($link);
 	
 	// Forwarding to gameplay site
-	header("Location: game.php");
+	header("Location: ../game.html");
 	exit();
 	
 ?>
