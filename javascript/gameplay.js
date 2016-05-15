@@ -26,14 +26,13 @@ function evaluateFragment(fragment) {
 		// Load HTML template
 		$("body").load("template/" + fragment.template + ".html", function() {
 			
-			$("#title").html(/*fragment.title*/'<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/House_at_1329_Carroll_Ave.%2C_Los_Angeles_%28Charmed_House%29.JPG" />');
+			$("#title").html(fragment.title);
 			$("#text").html(fragment.text);
 			
 			// Delete existing answer links
 			$("#answers").html(' ');
 			
 			// Resolve new answers
-			alert(fragment.answers);
 			$.each($.parseJSON(fragment.answers), function(i, object) {
 				
 				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
@@ -42,7 +41,9 @@ function evaluateFragment(fragment) {
 			
 			// Let page load...
 			$("#container").waitForImages(function() {
-				alert("test");
+				
+				// Page has been loaded...
+				
 			});
 			
 		});
