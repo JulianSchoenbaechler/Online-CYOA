@@ -159,9 +159,9 @@
 		public function addHistoryElement($id, $link)
 		{
 			// Check function arguments
-			if(!is_int($id))
+			if(!is_string($id))
 			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 0 to be integer.", E_USER_WARNING);
+				trigger_error("[Player] 'addHistoryElement' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			
 			// Check if history element already loaded
@@ -169,7 +169,7 @@
 			{
 				if($element['id'] == $id)
 				{
-					return;
+					return false;
 				}
 			}
 			
@@ -180,6 +180,8 @@
 			array_push($this->history, getRow('history', array('id' => $id)));
 			
 			unset($dc);
+			
+			return true;
 		}
 	}
 	
