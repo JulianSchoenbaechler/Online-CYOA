@@ -18,7 +18,9 @@
 
 // Evaluate received story fragment
 // Change template, texts and answers
-function evaluateFragment(fragment) {
+function evaluateFragment(fragment, callback) {
+	
+	var useCallback = arguments.length == 2 ? true : false;
 	
 	// Still logged in?
 	if(fragment != "logout") {
@@ -43,6 +45,9 @@ function evaluateFragment(fragment) {
 			$("#container").waitForImages(function() {
 				
 				// Page has been loaded...
+				if(useCallback) {
+					callback();
+				}
 				
 			});
 			
@@ -69,10 +74,8 @@ $(document).ready(function() {
 	
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
-		evaluateFragment(fragment);
-		
-		// Set up history canvas
-		initHistory();
+		// Set up story and history canvas
+		evaluateFragment(fragment, initHistory);
 		
 	}, "json");
 	
