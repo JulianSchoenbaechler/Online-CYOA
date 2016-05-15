@@ -177,11 +177,16 @@
 			$dc = new DatabaseController($link);
 			
 			// Add history element
-			array_push($this->history, getRow('history', array('id' => $id)));
-			
+			$row = $dc->getRow('history', array('id' => $id));
 			unset($dc);
 			
-			return true;
+			if(!is_null($row))
+			{
+				array_push($this->history, $row);
+				return true;
+			}
+			
+			return false;
 		}
 	}
 	
