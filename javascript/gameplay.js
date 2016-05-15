@@ -67,6 +67,13 @@ function goto(answerID) {
 // When document ready
 $(document).ready(function() {
 	
-	$.post("php/game.php", { task: "reload" }, evaluateFragment, "json");
+	$.post("php/game.php", { task: "reload" }, function(fragment) {
+		
+		evaluateFragment(fragment);
+		
+		// Set up history canvas
+		initHistory();
+		
+	}, "json");
 	
 });
