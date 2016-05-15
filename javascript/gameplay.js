@@ -40,6 +40,11 @@ function goto(answerID) {
 					
 				});
 				
+				// Let page load...
+				$("#container").waitForImages(function() {
+					alert("test");
+				});
+				
 			});
 		
 		}
@@ -75,6 +80,11 @@ $(document).ready(function() {
 					
 					$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
 					
+				});
+				
+				// Let page load...
+				$("#container").waitForImages(function() {
+					alert("test");
 				});
 				
 			});
