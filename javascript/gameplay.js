@@ -44,9 +44,14 @@ function evaluateFragment(fragment, callback) {
 			// Let page load...
 			$("#container").waitForImages(function() {
 				
+				// Setup history canvas
+				initHistory();
+				
 				// Page has been loaded...
 				if(useCallback) {
+					
 					callback();
+					
 				}
 				
 			});
@@ -75,7 +80,7 @@ $(document).ready(function() {
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
 		// Set up story and history canvas
-		evaluateFragment(fragment, initHistory);
+		evaluateFragment(fragment);
 		
 	}, "json");
 	
