@@ -26,7 +26,7 @@ function evaluateFragment(fragment, callback) {
 	if(fragment != "logout") {
 		
 		// Load HTML template
-		$("body").load("template/" + fragment.template + ".html", function() {
+		$("#container").load("template/" + fragment.template + ".html #container", function() {
 			
 			$("#title").html(fragment.title);
 			$("#text").html(fragment.text);
