@@ -101,7 +101,7 @@
 					}
 					break;
 				
-				// Client wants a history element from the player
+				// Client requests a history element from the player (saving)
 				case 'history':
 					// Received an id?
 					if(isset($_POST['id']))
@@ -139,6 +139,49 @@
 							}
 						}
 					}
+					break;
+				
+				// Client requests a history element from the player (without saving)
+				case 'historyStaged':
+					// Received an id?
+					if(isset($_POST['id']))
+					{
+						$id = trim($_POST['id']);
+						
+						// Client is looking for an element with the id of the
+						// current story fragment
+						if($id == 'current')
+						{
+							// Is there an element? Add it to player database if so...
+							if($player->addHistoryElement($player->fragment, $link))
+							{
+								echo json_encode($dc->getRow('history', array('id' => $player->fragment)));
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+						else
+						{
+							// Is there an element? Add it to player database if so...
+							if($player->addHistoryElement($id, $link))
+							{
+								echo json_encode($dc->getRow('history', array('id' => $id)));
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+					}
+					break;
+				
+				// Client requests the whole player history
+				case 'historyPlayer':
+					echo json_encode($player->getHistory());
 					break;
 				
 				default:

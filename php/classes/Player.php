@@ -189,6 +189,12 @@
 			
 			return false;
 		}
+		
+		// Get whole player history
+		public function getHistory()
+		{
+			return $this->history;
+		}
 	}
 	
 ?>
