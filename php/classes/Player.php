@@ -182,7 +182,8 @@
 			
 			if(!is_null($row))
 			{
-				array_push($this->history, $row);
+				$row['connections'] = json_decode($row['connections']);
+				array_push($this->history, (array)$row);
 				return true;
 			}
 			
