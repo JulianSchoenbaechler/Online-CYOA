@@ -47,11 +47,11 @@
 			if(!is_null($dbArray))
 			{
 				$this->name = (string)$dbArray['name'];
-				$this->history = json_decode($dbArray['history']);
-				$this->memory = json_decode($dbArray['memory']);
-				$this->experience = json_decode($dbArray['experience']);
+				$this->history = json_decode($dbArray['history'], true);
+				$this->memory = json_decode($dbArray['memory'], true);
+				$this->experience = json_decode($dbArray['experience'], true);
 				$this->points = (int)$dbArray['points'];
-				$this->avatar = json_decode($dbArray['avatar']);
+				$this->avatar = json_decode($dbArray['avatar'], true);
 				$this->fragment = (string)$dbArray['fragment'];
 				
 				if($dbArray['finished'] == 0)
@@ -182,7 +182,7 @@
 			
 			if(!is_null($row))
 			{
-				$row['connections'] = json_decode($row['connections']);
+				$row['connections'] = json_decode($row['connections'], true);
 				array_push($this->history, (array)$row);
 				return true;
 			}
