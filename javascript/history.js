@@ -115,92 +115,158 @@ function connect(element1, element2, curve) {
 
 // Get history element
 // Function fires a callback when finished loading
-function getElement(elementID, callback) {
+function getElement(elementID, main, callback) {
 	
-	var useCallback = arguments.length == 2 ? true : false;
+	// Standard disable argument
+	if(typeof main === "undefined") {
+        main = false;
+    }
+	
+	var useCallback = arguments.length == 3 ? true : false;
 	
 	// Get element from server
 	if(useCallback) {
 		
-		$.post("php/game.php", { task: "history", id: elementID.toString() }, callback, "json");
+		if(main) {
+			$.post("php/game.php", { task: "history", id: elementID.toString() }, callback, "json");
+		} else {
+			$.post("php/game.php", { task: "historyStaged", id: elementID.toString() }, callback, "json");
+		}
 		
 	}
 	
 }
 
-// Draw history element
-function drawElement(elementID) {
+// Draw the element (circle and description) onto the paper
+function drawElement(element, disable) {
 	
-	var connectedElements = [];
+	// Standard disable argument
+	if(typeof disable === "undefined") {
+        disable = false;
+    }
+	
+	// Element stack lookup
+	var canvasObj = getElementFromStack(element.id.toString());
+	
+	// Element does not exist in stack?
+	if(canvasObj === false) {
+		
+		// Creates history element circle
+		var cir = paper.circle(parseInt(element.x), parseInt(element.y), 6);
+		
+		// Create different circle when it should be disabled
+		if(!disable) {
+			cir.attr({
+				"stroke": "#bce1ff",
+				"stroke-width": 1.5,
+				"fill": "r(0.5, 0.5)#0a46ca-#2b6bd2-#67b9e9",
+			});
+		} else {
+			cir.attr({
+				"stroke": "#a9a9a9",
+				"stroke-width": 1.5,
+				"fill": "r(0.5, 0.5)#3a3a3a-#6d6d6d-#ababab",
+			});
+		}
+		
+		// Creates history element description
+		var box = paper.rect(parseInt(element.x), parseInt(element.y) + 14, 200, 34, 4);
+		box.attr({
+			"stroke": "#d0d0d0",
+			"stroke-width": 2,
+			"fill": "90-#0a46ca-#3980ff",
+			});
+		
+		var text = paper.text(parseInt(element.x) + 10, parseInt(element.y) + 30, element.description);
+		text.attr({"font": "Arial", "font-size": 14, "fill": "#fff", "text-anchor": "start"});
+		
+		// Group
+		var desc = paper.set();
+		desc.push(box, text);
+		desc.hide();
+		
+		// Add to element stack
+		elementStack.push({ id: element.id, circle: cir, description: desc });
+		
+		// Create mouseover event
+		if(!disable) {
+			
+			cir.node.onmouseover = function() {
+				getElementFromStack(this).description.show();
+				$("#history").css('cursor', 'help');
+			};
+			cir.node.onmouseout = function() {
+				getElementFromStack(this).description.hide();
+				$("#history").css('cursor', 'auto');
+			};
+			
+		}
+		
+		// Return circle object
+		return cir;
+	
+	} else {
+		
+		// Edit element from stack
+		
+		// Reset all events
+		canvasObj.circle.node.onmouseover = null;
+		canvasObj.circle.node.onmouseout = null;
+		
+		// Edit circle
+		canvasObj.circle.attr({
+			"stroke": "#bce1ff",
+			"stroke-width": 1.5,
+			"fill": "r(0.5, 0.5)#0a46ca-#2b6bd2-#67b9e9",
+		});
+		
+		// Create mouseover event
+		canvasObj.circle.node.onmouseover = function() {
+			getElementFromStack(this).description.show();
+			$("#history").css('cursor', 'help');
+		};
+		canvasObj.circle.node.onmouseout = function() {
+			getElementFromStack(this).description.hide();
+			$("#history").css('cursor', 'auto');
+		};
+		
+		// Return null
+		return null;
+		
+	}
+	
+}
+
+// Add history element
+function addElement(elementID) {
+	
+	// Temp element for connections
+	var tempElement;
 	
 	// Get history element from database
-	getElement(elementID, function(element) {
+	getElement(elementID, true, function(element) {
 		
 		// Does this element exist?
 		if(element != "none") {
 			
-			// Element stack lookup
-			var canvasObj = getElementFromStack(element.id.toString());
-			
-			if(canvasObj === false) {
+			// Draw main element
+			tempElement = drawElement(element, false);
+			alert(tempElement);
+			$.each($.parseJSON(element.connections), function(i, object) {
 				
-				// Creates history element circle
-				var cir = paper.circle(parseInt(element.x), parseInt(element.y), 6);
-				cir.attr({
-					"stroke": "#bce1ff",
-					"stroke-width": 1.5,
-					"fill": "r(0.5, 0.5)#0a46ca-#2b6bd2-#67b9e9",
+				// Get each element by its id and draw it to the paper
+				getElement(object, false, function(element) {
+					
+					// Does this element exist?
+					if(element != "none") {
+						
+						// Draw it and connect it
+						connect(tempElement, drawElement(element, true));
+					}
+					
 				});
 				
-				// Creates history element description
-				var box = paper.rect(parseInt(element.x), parseInt(element.y) + 14, 200, 34, 4);
-				box.attr({
-					"stroke": "#d0d0d0",
-					"stroke-width": 2,
-					"fill": "90-#0a46ca-#3980ff",
-					});
-				
-				var text = paper.text(parseInt(element.x) + 10, parseInt(element.y) + 30, element.description);
-				text.attr({"font": "Arial", "font-size": 14, "fill": "#fff", "text-anchor": "start"});
-				
-				// Group
-				var desc = paper.set();
-				desc.push(box, text);
-				//desc.hide();
-				
-				// Add to element stack
-				elementStack.push({ id: element.id, circle: cir, description: desc });
-				
-				// Create mouseover event
-				cir.node.onmouseover = function() {
-					getElementFromStack(this).description.show();
-					$("#history").css('cursor', 'help');
-				};
-				cir.node.onmouseout = function() {
-					getElementFromStack(this).description.hide();
-					$("#history").css('cursor', 'auto');
-				};
-			
-			} else {
-				
-				// Edit element from stack
-				canvasObj.circle.attr({
-					"stroke": "#bce1ff",
-					"stroke-width": 1.5,
-					"fill": "r(0.5, 0.5)#0a46ca-#2b6bd2-#67b9e9",
-				});
-				
-				// Create mouseover event
-				canvasObj.circle.node.onmouseover = function() {
-					getElementFromStack(this).description.show();
-					$("#history").css('cursor', 'help');
-				};
-				canvasObj.circle.node.onmouseout = function() {
-					getElementFromStack(this).description.hide();
-					$("#history").css('cursor', 'auto');
-				};
-				
-			}
+			});
 			
 		}
 		
@@ -208,15 +274,61 @@ function drawElement(elementID) {
 	
 }
 
-// Set up canvas
+// Add all history elements
+function addAllElements() {
+	
+	var connectedElements = [];
+	
+	$.post("php/game.php", { task: "historyPlayer" }, function(allElements) {
+		
+		// No history elements? (new game)
+		if(allElements.length == 0) {
+			
+			addElement("start");
+			
+		} else {
+			
+			for(var i = 0;i < allElements.length;i++) {
+				
+				// Draw element
+				drawElement(allElements[i], false);
+				
+				// Draw connected elements
+				$.each(allElements[i].connections, function(i, object) {
+					
+					// Get each element by its id and draw it to the paper
+					getElement(object, false, function(element) {
+						
+						// Does this element exist?
+						if(element != "none") {
+							drawElement(element, true);
+						}
+						
+					});
+					
+				});
+				
+			}
+			
+		}
+		
+	}, "json");
+	
+}
+
+// This function is fired everytime a new story fragment gets loaded
 function initHistory() {
 	
 	// Check if canvas is already drawed
-	if(typeof paper == 'undefined')
-	{
+	if(typeof paper == 'undefined') {
+		
 		paper = new Raphael(document.getElementById('history'), 1024, 512);
-		//drawElement("current");
+		addAllElements();
+		
+	} else {
+		
+		addElement("current");
+		
 	}
-	drawElement("start");
 	
 }
