@@ -231,7 +231,7 @@ function drawElement(element, disable) {
 		};
 		
 		// Return null
-		return null;
+		return canvasObj.circle;
 		
 	}
 	
@@ -251,7 +251,7 @@ function addElement(elementID) {
 			
 			// Draw main element
 			tempElement = drawElement(element, false);
-			alert(tempElement);
+			
 			$.each($.parseJSON(element.connections), function(i, object) {
 				
 				// Get each element by its id and draw it to the paper
@@ -262,6 +262,7 @@ function addElement(elementID) {
 						
 						// Draw it and connect it
 						connect(tempElement, drawElement(element, true));
+						
 					}
 					
 				});
@@ -277,7 +278,8 @@ function addElement(elementID) {
 // Add all history elements
 function addAllElements() {
 	
-	var connectedElements = [];
+	// Temp element for connections
+	var tempElement;
 	
 	$.post("php/game.php", { task: "historyPlayer" }, function(allElements) {
 		
@@ -291,9 +293,52 @@ function addAllElements() {
 			for(var i = 0;i < allElements.length;i++) {
 				
 				// Draw element
-				drawElement(allElements[i], false);
+				tempElement = drawElement(allElements[i], false);
 				
+				// Add temp element for connection into an anonymous function
+				// to make it unique for each iteration
+				(function(connected) {
+					
+					$.each(allElements[i].connections, function(j, object) {
+						
+						// Get each element by its id and draw it to the paper
+						getElement(object, false, function(element) {
+							
+							// Does this element exist?
+							if(element != "none") {
+								
+								// Draw it and connect it
+								connect(connected, drawElement(element, true));
+								
+							}
+							
+						});
+						
+					});
+					
+				})(tempElement);
+				
+				/*
 				// Draw connected elements
+				for(var j = 0;j < allElements[i].connections.length;j++) {
+					
+					
+					
+					// Get each element by its id and draw it to the paper
+					getElement(allElements[i].connections[j], false, function(element) {
+						
+						// Does this element exist?
+						if(element != "none") {
+							
+							// Draw it and connect it
+							connect(tempElement, drawElement(element, true));
+							
+						}
+						
+					});
+					//alert(allElements[i].connections[j]);
+				}
+				
 				$.each(allElements[i].connections, function(i, object) {
 					
 					// Get each element by its id and draw it to the paper
@@ -301,12 +346,16 @@ function addAllElements() {
 						
 						// Does this element exist?
 						if(element != "none") {
-							drawElement(element, true);
-						}
+							
+							// Draw it and connect it
+							connect(tempElement, drawElement(element, true));
+							
+						} else { alert(allElements[i].id); }
 						
 					});
 					
 				});
+				*/
 				
 			}
 			

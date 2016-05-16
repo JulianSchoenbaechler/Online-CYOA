@@ -152,10 +152,17 @@
 						// current story fragment
 						if($id == 'current')
 						{
-							// Is there an element? Add it to player database if so...
-							if($player->addHistoryElement($player->fragment, $link))
+							// Get attributes from history elements from database
+							
+							// Add history element
+							$row = $dc->getRow('history', array('id' => $player->fragment));
+							
+							if(!is_null($row))
 							{
-								echo json_encode($dc->getRow('history', array('id' => $player->fragment)));
+								$row['connections'] = json_decode($row['connections'], true);
+								
+								// Return element
+								echo json_encode($row);
 							}
 							else
 							{
@@ -165,10 +172,15 @@
 						}
 						else
 						{
-							// Is there an element? Add it to player database if so...
-							if($player->addHistoryElement($id, $link))
+							// Add history element
+							$row = $dc->getRow('history', array('id' => $id));
+							
+							if(!is_null($row))
 							{
-								echo json_encode($dc->getRow('history', array('id' => $id)));
+								$row['connections'] = json_decode($row['connections'], true);
+								
+								// Return element
+								echo json_encode($row);
 							}
 							else
 							{
