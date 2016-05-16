@@ -101,6 +101,46 @@
 					}
 					break;
 				
+				// Client wants a history element from the player
+				case 'history':
+					// Received an id?
+					if(isset($_POST['id']))
+					{
+						$id = trim($_POST['id']);
+						
+						// Client is looking for an element with the id of the
+						// current story fragment
+						if($id == 'current')
+						{
+							// Is there an element? Add it to player database if so...
+							if($player->addHistoryElement($player->fragment, $link))
+							{
+								$player->saveData($link);
+								echo json_encode($dc->getRow('history', array('id' => $player->fragment)));
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+						else
+						{
+							// Is there an element? Add it to player database if so...
+							if($player->addHistoryElement($id, $link))
+							{
+								$player->saveData($link);
+								echo json_encode($dc->getRow('history', array('id' => $id)));
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+					}
+					break;
+				
 				default:
 					break;
 			}
