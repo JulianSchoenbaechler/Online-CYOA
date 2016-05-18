@@ -66,7 +66,8 @@
 						$player->finished = false;
 						$player->saveData($link);
 						
-						$row = $dc->getRow('story', array('id' => 'start'));
+						// Standard stort fragment: 'prolog1'
+						$row = $dc->getRow('story', array('id' => 'prolog1'));
 						$row['template'] = template('start');
 						
 						echo json_encode($row);
