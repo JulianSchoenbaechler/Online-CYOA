@@ -18,6 +18,7 @@
 
 // Global paper variable
 var paper;
+var startID = "start";
 var elementStack = [];
 // Element stack:
 // Array filled with objects:
@@ -286,7 +287,7 @@ function addAllElements() {
 		// No history elements? (new game)
 		if(allElements.length == 0) {
 			
-			addElement("start");
+			addElement(startID);
 			
 		} else {
 			
