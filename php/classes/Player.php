@@ -47,11 +47,11 @@
 			if(!is_null($dbArray))
 			{
 				$this->name = (string)$dbArray['name'];
-				$this->history = json_decode($dbArray['history']);
-				$this->memory = json_decode($dbArray['memory']);
-				$this->experience = json_decode($dbArray['experience']);
+				$this->history = json_decode($dbArray['history'], true);
+				$this->memory = json_decode($dbArray['memory'], true);
+				$this->experience = json_decode($dbArray['experience'], true);
 				$this->points = (int)$dbArray['points'];
-				$this->avatar = json_decode($dbArray['avatar']);
+				$this->avatar = json_decode($dbArray['avatar'], true);
 				$this->fragment = (string)$dbArray['fragment'];
 				
 				if($dbArray['finished'] == 0)
@@ -111,7 +111,7 @@
 			$this->finished = true;
 			$this->points = 0;
 			$this->avatar = 'noavatar';
-			$this->fragment = 'start';
+			$this->fragment = 'prolog1';
 			
 			// Database create Player
 			$dc = new DatabaseController($link);
@@ -159,9 +159,9 @@
 		public function addHistoryElement($id, $link)
 		{
 			// Check function arguments
-			if(!is_int($id))
+			if(!is_string($id))
 			{
-				trigger_error("[Player] 'addHistoryElement' expected argument 0 to be integer.", E_USER_WARNING);
+				trigger_error("[Player] 'addHistoryElement' expected argument 0 to be string.", E_USER_WARNING);
 			}
 			
 			// Check if history element already loaded
@@ -169,7 +169,7 @@
 			{
 				if($element['id'] == $id)
 				{
-					return;
+					return false;
 				}
 			}
 			
@@ -177,9 +177,23 @@
 			$dc = new DatabaseController($link);
 			
 			// Add history element
-			array_push($this->history, getRow('history', array('id' => $id)));
-			
+			$row = $dc->getRow('history', array('id' => $id));
 			unset($dc);
+			
+			if(!is_null($row))
+			{
+				$row['connections'] = json_decode($row['connections'], true);
+				array_push($this->history, (array)$row);
+				return true;
+			}
+			
+			return false;
+		}
+		
+		// Get whole player history
+		public function getHistory()
+		{
+			return $this->history;
 		}
 	}
 	

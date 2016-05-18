@@ -203,7 +203,7 @@
 			// If row was found
 			if(mysqli_num_rows($result) > 0)
 			{
-				$row = mysqli_fetch_array($result);
+				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 				
 				mysqli_free_result($result);
 				

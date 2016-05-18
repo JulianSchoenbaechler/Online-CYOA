@@ -66,7 +66,8 @@
 						$player->finished = false;
 						$player->saveData($link);
 						
-						$row = $dc->getRow('story', array('id' => 'start'));
+						// Standard stort fragment: 'prolog1'
+						$row = $dc->getRow('story', array('id' => 'prolog1'));
 						$row['template'] = template('start');
 						
 						echo json_encode($row);
@@ -99,6 +100,101 @@
 						// Load this story fragment
 						echo json_encode($row);
 					}
+					break;
+				
+				// Client requests a history element from the player (saving)
+				case 'history':
+					// Received an id?
+					if(isset($_POST['id']))
+					{
+						$id = trim($_POST['id']);
+						
+						// Client is looking for an element with the id of the
+						// current story fragment
+						if($id == 'current')
+						{
+							// Is there an element? Add it to player database if so...
+							if($player->addHistoryElement($player->fragment, $link))
+							{
+								$player->saveData($link);
+								echo json_encode($dc->getRow('history', array('id' => $player->fragment)));
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+						else
+						{
+							// Is there an element? Add it to player database if so...
+							if($player->addHistoryElement($id, $link))
+							{
+								$player->saveData($link);
+								echo json_encode($dc->getRow('history', array('id' => $id)));
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+					}
+					break;
+				
+				// Client requests a history element from the player (without saving)
+				case 'historyStaged':
+					// Received an id?
+					if(isset($_POST['id']))
+					{
+						$id = trim($_POST['id']);
+						
+						// Client is looking for an element with the id of the
+						// current story fragment
+						if($id == 'current')
+						{
+							// Get attributes from history elements from database
+							
+							// Add history element
+							$row = $dc->getRow('history', array('id' => $player->fragment));
+							
+							if(!is_null($row))
+							{
+								$row['connections'] = json_decode($row['connections'], true);
+								
+								// Return element
+								echo json_encode($row);
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+						else
+						{
+							// Add history element
+							$row = $dc->getRow('history', array('id' => $id));
+							
+							if(!is_null($row))
+							{
+								$row['connections'] = json_decode($row['connections'], true);
+								
+								// Return element
+								echo json_encode($row);
+							}
+							else
+							{
+								// Return 'none'
+								echo json_encode('none');
+							}
+						}
+					}
+					break;
+				
+				// Client requests the whole player history
+				case 'historyPlayer':
+					echo json_encode($player->getHistory());
 					break;
 				
 				default:

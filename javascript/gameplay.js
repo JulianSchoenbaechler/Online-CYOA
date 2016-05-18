@@ -16,45 +16,61 @@
 *
 */
 
+// Evaluate received story fragment
+// Change template, texts and answers
+function evaluateFragment(fragment, callback) {
+	
+	var useCallback = arguments.length == 2 ? true : false;
+	
+	// Still logged in?
+	if(fragment != "logout") {
+		
+		// Load HTML template
+		$("#container").load("template/" + fragment.template + ".html #container", function() {
+			
+			$("#title").html(fragment.title);
+			$("#text").html(fragment.text);
+			
+			// Delete existing answer links
+			$("#answers").html(' ');
+			
+			// Resolve new answers
+			$.each($.parseJSON(fragment.answers), function(i, object) {
+				
+				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+				
+			});
+			
+			// Let page load...
+			$("#container").waitForImages(function() {
+				
+				// Setup history canvas
+				initHistory();
+				
+				// Page has been loaded...
+				if(useCallback) {
+					
+					callback();
+					
+				}
+				
+			});
+			
+		});
+	
+	}
+	else
+	{
+		// Redirect to index page
+		window.location.assign("index.html");
+	}
+	
+}
+
 // Player has clicked an answer / option
 function goto(answerID) {
 	
-	$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
-		
-		// Still logged in?
-		if(fragment != "logout") {
-			
-			// Load HTML template
-			$("body").load("template/" + fragment.template + ".html", function() {
-				
-				$("#title").html(fragment.title);
-				$("#text").html(fragment.text);
-				
-				// Delete existing answer links
-				$("#answers").html(' ');
-				
-				// Resolve new answers
-				$.each($.parseJSON(fragment.answers), function(i, object) {
-					
-					$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
-					
-				});
-				
-				// Let page load...
-				$("#container").waitForImages(function() {
-					alert("test");
-				});
-				
-			});
-		
-		}
-		else
-		{
-			// Redirect to index page
-			window.location.assign("index.html");
-		}
-		
-	}, "json");
+	$.post("php/game.php", { task: "answer", id: answerID.toString() }, evaluateFragment, "json");
 	
 }
 
@@ -63,38 +79,8 @@ $(document).ready(function() {
 	
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
-		// Still logged in?
-		if(fragment != "logout") {
-			
-			// Load HTML template
-			$("body").load("template/" + fragment.template + ".html", function() {
-				
-				$("#title").html(fragment.title);
-				$("#text").html(fragment.text);
-				
-				// Delete existing answer links
-				$("#answers").html(' ');
-				
-				// Resolve new answers
-				$.each($.parseJSON(fragment.answers), function(i, object) {
-					
-					$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
-					
-				});
-				
-				// Let page load...
-				$("#container").waitForImages(function() {
-					alert("test");
-				});
-				
-			});
-		
-		}
-		else
-		{
-			// Redirect to index page
-			window.location.assign("index.html");
-		}
+		// Set up story and history canvas
+		evaluateFragment(fragment);
 		
 	}, "json");
 	
