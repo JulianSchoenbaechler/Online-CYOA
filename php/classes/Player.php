@@ -111,7 +111,7 @@
 			$this->finished = true;
 			$this->points = 0;
 			$this->avatar = 'noavatar';
-			$this->fragment = 'start';
+			$this->fragment = 'prolog1';
 			
 			// Database create Player
 			$dc = new DatabaseController($link);
