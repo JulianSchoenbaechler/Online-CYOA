@@ -18,7 +18,7 @@
 
 // Global paper variable
 var paper;
-var startID = "start";
+var startID = "1";
 var elementStack = [];
 // Element stack:
 // Array filled with objects:
