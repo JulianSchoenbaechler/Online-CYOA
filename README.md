@@ -35,4 +35,4 @@ __Server-side Development__
 
 __Client-side Development__
 * HTML 5
-* Javascript /jQuery based interface
+* Javascript / jQuery based interface
