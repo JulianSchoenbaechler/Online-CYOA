@@ -37,7 +37,7 @@ function evaluateFragment(fragment, callback) {
 			// Resolve new answers
 			$.each($.parseJSON(fragment.answers), function(i, object) {
 				
-				$("#answers").append('<a href="#" onclick="goto(\'' + object.id + '\')">' + object.answer + '</a><br />');
+				$("#answers").append('<a href="#" onclick="gotoFragment(\'' + object.id + '\')">' + object.answer + '</a><br />');
 				
 			});
 			
@@ -68,7 +68,7 @@ function evaluateFragment(fragment, callback) {
 }
 
 // Player has clicked an answer / option
-function goto(answerID) {
+function gotoFragment(answerID) {
 	
 	$.post("php/game.php", { task: "answer", id: answerID.toString() }, evaluateFragment, "json");
 	
