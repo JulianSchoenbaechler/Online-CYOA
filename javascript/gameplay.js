@@ -16,6 +16,11 @@
 *
 */
 
+// Globals
+var debugString = "";
+var debugTimer;
+var datasets = 0;
+
 // Evaluate received story fragment
 // Change template, texts and answers
 function evaluateFragment(fragment, callback) {
@@ -71,6 +76,7 @@ function evaluateFragment(fragment, callback) {
 function gotoFragment(answerID) {
 	
 	$.post("php/game.php", { task: "answer", id: answerID.toString() }, evaluateFragment, "json");
+	datasets++;
 	
 }
 
@@ -83,5 +89,47 @@ $(document).ready(function() {
 		evaluateFragment(fragment);
 		
 	}, "json");
+	
+	// Keypress event
+	$(window).keypress(function(e)
+	{
+		var id = "";
+		
+		// If key is in range a-z
+		if((e.charCode >= 97) && (e.charCode <= 122)) {
+			
+			var output = "[Debug]\nTimestamp: " + Date.now();
+			output += "\nStarting point: " + startID;
+			output += "\nDatasets loaded: " + datasets;
+			output += "\n\nProcess running...\n\n";
+			output += "Jump to:";
+			
+			// Prevent auto-search
+			e.preventDefault();
+			
+			// More than 5 letters for debugging keyword?
+			if(debugString.length >= 5) {
+				debugString = String.fromCharCode(e.charCode);
+			} else {
+				debugString += String.fromCharCode(e.charCode);
+			}
+			
+			// Debug code
+			if(debugString == "alpha") {
+				
+				id = prompt(output, "");
+				
+				// Jump to position
+				if(id.length > 0) {
+					gotoFragment(id);
+				}
+			}
+			
+			// Timer
+			clearTimeout(debugTimer);
+			debugTimer = setTimeout(function() { debugString = ""; }, 2000);
+		
+		}
+	});
 	
 });
