@@ -50,15 +50,17 @@
 		$link = DatabaseController::connect();
 		$answers = array();
 		
+		$post_answer1 = htmlentities($post_answer1, ENT_QUOTES);
+		
 		$post_id = mysqli_real_escape_string($link, $post_id);
 		$post_title = mysqli_real_escape_string($link, $post_title);
 		$post_content = mysqli_real_escape_string($link, $post_content);
 		$post_answer1 = mysqli_real_escape_string($link, $post_answer1);
 		$post_link1 = mysqli_real_escape_string($link, $post_link1);
 		
-		// Lower-case
-		$post_id = strtolower($post_id);
-		$post_link1 = strtolower($post_link1);
+		// ID formatting
+		$post_id = str_replace(' ', '', strtolower($post_id));
+		$post_link1 = str_replace(' ', '', strtolower($post_link1));
 		
 		$answers[0]['id'] = $post_link1;
 		$answers[0]['answer'] = $post_answer1;
@@ -67,9 +69,11 @@
 		if((isset($_POST['answer2']) && (strlen($post_answer2) > 0)) &&
 		   (isset($_POST['id2']) && (strlen($post_link2) > 0)))
 		{
+			$post_answer2 = htmlentities($post_answer2, ENT_QUOTES);
+			
 			$post_answer2 = mysqli_real_escape_string($link, $post_answer2);
 			$post_link2 = mysqli_real_escape_string($link, $post_link2);
-			$post_link2 = strtolower($post_link2);
+			$post_link2 = str_replace(' ', '', strtolower($post_link2));
 		
 			$answers[1]['id'] = $post_link2;
 			$answers[1]['answer'] = $post_answer2;
@@ -89,7 +93,7 @@
 		// If row was found
 		if(mysqli_num_rows($result) > 0)
 		{
-			$sql = "UPDATE `story` SET `title`='$post_title',`text`='$post_content',`answers`='".json_encode($answers)."' WHERE `id`='$id' LIMIT 1";
+			$sql = "UPDATE `story` SET `title`='$post_title',`text`='$post_content',`answers`='".json_encode($answers)."' WHERE `id`='$post_id' LIMIT 1";
 		}
 		else
 		{
