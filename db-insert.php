@@ -57,7 +57,7 @@
 		$post_content = mysqli_real_escape_string($link, $post_content);
 		$post_answer1 = mysqli_real_escape_string($link, $post_answer1);
 		$post_link1 = mysqli_real_escape_string($link, $post_link1);
-		
+
 		// ID formatting
 		$post_id = str_replace(' ', '', strtolower($post_id));
 		$post_link1 = str_replace(' ', '', strtolower($post_link1));
