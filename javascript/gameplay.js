@@ -37,7 +37,7 @@ function evaluateFragment(fragment, callback) {
 			// Resolve new answers
 			$.each($.parseJSON(fragment.answers), function(i, object) {
 				
-				$("#answers").append('<a href="#" onclick="goto(' + object.id + ')">' + object.answer + '</a><br />');
+				$("#answers").append('<a href="#" onclick="goto(\'' + object.id + '\')">' + object.answer + '</a><br />');
 				
 			});
 			
