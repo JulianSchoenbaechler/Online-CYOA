@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head>
+
+		<title>Insert story fragments</title>
+
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="robots" content="noindex, nofollow, noarchive" />
+		<meta name="googlebot" content="noindex, noarchive" />
+
+		<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20150503/json2.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script type="text/javascript">
+			// Start TinyMCE
+			tinyMCE.init({
+				selector: 'textarea',
+				plugins: 'paste textcolor colorpicker',
+				toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright alignjustify forecolor backcolor bullist numlist',
+				menubar: 'file edit insert view format table tools',
+				min_height: 300
+			});
+		</script>
+
+    </head>
+
+    <body>
+
+		<!-- begin container -->
+		<div style="width: 800px;" id="container">
+
+			<a href="db.php">Back to the list...</a>
+			<h2>Insert</h2>
+			<p style="color: #FF0000; font-weight: bold;">$=error=$</p>
+			<form action="db-insert.php" method="post">
+	
+				<p>ID:</p>
+				<input type="text" name="id" maxlength="64" value="$=id=$" style="width: 400px;" tabindex="1" />
+				<br /><br />
+				<p>Titel ('untitled' einf&uuml;gen, falls kein Titel angezeigt werden soll):</p>
+				<input type="text" name="title" maxlength="64" value="$=title=$" style="width: 400px;" tabindex="1" />
+				<br /><br />
+				<textarea name="content" style="width: 800px; height: 300px;" tabindex="2">$=content=$</textarea>
+				<br /><br />
+				<p>Text / Auswahl&ouml;glichkeit 1:</p>
+				<input type="text" name="answer1" value="$=answer1=$" style="width: 400px;" tabindex="3" />
+				<p>Link-ID / Auswahl&ouml;glichkeit 1:</p>
+				<input type="text" name="id1" value="$=id1=$" maxlength="64" style="width: 400px;" tabindex="4" />
+				<br /><br />
+				<p>Text / Auswahl&ouml;glichkeit 2:</p>
+				<input type="text" name="answer2" value="$=answer2=$" style="width: 400px;" tabindex="5" />
+				<p>Link-ID / Auswahl&ouml;glichkeit 2:</p>
+				<input type="text" name="id2" value="$=id2=$" maxlength="64" style="width: 400px;" tabindex="6" />
+				<p>(Die Felder f&uuml;r Auswahl&ouml;glichkeit 2 k&ouml;nnen auch leer gelassen werden.)</p>
+				<input type="submit" value="Ab in die Datenbank" tabindex="7" />
+	
+			</form>
+
+		<!-- end container -->
+		</div>
+
+    </body>
+
+</html>
