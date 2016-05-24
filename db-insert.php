@@ -21,6 +21,10 @@
 	// Include library files
 	require_once 'php/Includes.php';
 	
+	// Variables
+	$characters = array('none', 'gardai', 'declan', 'amelia', 'masahiro', 'antoine', 'fatime');
+	$sounds = array('none', '', '', '', '', '', '');
+	
 	// Post arguments
 	$post_id = trim($_POST['id']);
 	$post_title = trim($_POST['title']);
@@ -29,6 +33,9 @@
 	$post_answer2 = trim($_POST['answer2']);
 	$post_link1 = trim($_POST['id1']);
 	$post_link2 = trim($_POST['id2']);
+	$post_character1 = trim($_POST['character1']);
+	$post_character2 = trim($_POST['character2']);
+	$post_ambient = trim($_POST['ambient']);
 	
 	// Displayed elements
 	$title = $post_title;
@@ -37,6 +44,9 @@
 	$answer2 = $post_answer2;
 	$link1 = $post_link1;
 	$link2 = $post_link2;
+	$character1 = $post_character1;
+	$character2 = $post_character2;
+	$ambient = $post_ambient;
 	$error = "";
 	
 	// Complete dataset?
@@ -57,6 +67,9 @@
 		$post_content = mysqli_real_escape_string($link, $post_content);
 		$post_answer1 = mysqli_real_escape_string($link, $post_answer1);
 		$post_link1 = mysqli_real_escape_string($link, $post_link1);
+		$post_character1 = mysqli_real_escape_string($link, $post_character1);
+		$post_character2 = mysqli_real_escape_string($link, $post_character2);
+		$post_ambient = mysqli_real_escape_string($link, $post_ambient);
 
 		// ID formatting
 		$post_id = str_replace(' ', '', strtolower($post_id));
@@ -93,11 +106,11 @@
 		// If row was found
 		if(mysqli_num_rows($result) > 0)
 		{
-			$sql = "UPDATE `story` SET `title`='$post_title',`text`='$post_content',`answers`='".json_encode($answers)."' WHERE `id`='$post_id' LIMIT 1";
+			$sql = "UPDATE `story` SET `title`='$post_title',`text`='$post_content',`answers`='".json_encode($answers)."', `character1`='$post_character1', `character2`='$post_character2', `ambient`='$post_ambient' WHERE `id`='$post_id' LIMIT 1";
 		}
 		else
 		{
-			$sql = "INSERT INTO `story`(`id`, `title`, `text`, `answers`) VALUES ('$post_id','$post_title','$post_content','".json_encode($answers)."')";
+			$sql = "INSERT INTO `story`(`id`, `title`, `text`, `answers`, `character1`, `character2`, `ambient`) VALUES ('$post_id','$post_title','$post_content','".json_encode($answers)."','$post_character1','$post_character2','$post_ambient')";
 		}
 		
 		mysqli_free_result($result);
@@ -130,6 +143,46 @@
 	$output = str_replace('$=answer2=$', $answer2, $output);
 	$output = str_replace('$=id1=$', $link1, $output);
 	$output = str_replace('$=id2=$', $link2, $output);
+	
+	// Character 1
+	for($i = 1;$i <= 7;$i++)
+	{
+		if($characters[$i] == $post_character1)
+		{
+			$output = str_replace('$=c1'.(string)$i.'=$', 'required', $output);
+		}
+		else
+		{
+			$output = str_replace('$=c1'.(string)$i.'=$', '', $output);
+		}
+	}
+	
+	// Character 2
+	for($i = 1;$i <= 7;$i++)
+	{
+		if($characters[$i] == $post_character2)
+		{
+			$output = str_replace('$=c2'.(string)$i.'=$', 'required', $output);
+		}
+		else
+		{
+			$output = str_replace('$=c2'.(string)$i.'=$', '', $output);
+		}
+	}
+	
+	// Ambient sound
+	for($i = 1;$i <= 7;$i++)
+	{
+		if($sounds[$i] == $post_ambient)
+		{
+			$output = str_replace('$=a'.(string)$i.'=$', 'required', $output);
+		}
+		else
+		{
+			$output = str_replace('$=a'.(string)$i.'=$', '', $output);
+		}
+	}
+	
 	$output = str_replace('$=error=$', $error, $output);
 	echo $output;
 	
