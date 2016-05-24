@@ -147,9 +147,9 @@
 	// Character 1
 	for($i = 1;$i <= 7;$i++)
 	{
-		if($characters[$i] == $post_character1)
+		if($characters[$i - 1] == $character1)
 		{
-			$output = str_replace('$=c1'.(string)$i.'=$', 'required', $output);
+			$output = str_replace('$=c1'.(string)$i.'=$', 'selected', $output);
 		}
 		else
 		{
@@ -160,9 +160,9 @@
 	// Character 2
 	for($i = 1;$i <= 7;$i++)
 	{
-		if($characters[$i] == $post_character2)
+		if($characters[$i - 1] == $character2)
 		{
-			$output = str_replace('$=c2'.(string)$i.'=$', 'required', $output);
+			$output = str_replace('$=c2'.(string)$i.'=$', 'selected', $output);
 		}
 		else
 		{
@@ -173,9 +173,9 @@
 	// Ambient sound
 	for($i = 1;$i <= 7;$i++)
 	{
-		if($sounds[$i] == $post_ambient)
+		if($sounds[$i - 1] == $ambient)
 		{
-			$output = str_replace('$=a'.(string)$i.'=$', 'required', $output);
+			$output = str_replace('$=a'.(string)$i.'=$', 'selected', $output);
 		}
 		else
 		{

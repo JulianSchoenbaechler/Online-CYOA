@@ -21,6 +21,10 @@
 	// Include library files
 	require_once 'php/Includes.php';
 	
+	// Variables
+	$characters = array('none', 'gardai', 'declan', 'amelia', 'masahiro', 'antoine', 'fatime');
+	$sounds = array('none', '', '', '', '', '', '');
+	
 	// Get arguments
 	$id = trim($_GET['id']);
 	
@@ -31,6 +35,9 @@
 	$answer2 = "";
 	$link1 = "";
 	$link2 = "";
+	$character1 = "";
+	$character2 = "";
+	$ambient = "";
 	$error = "";
 	
 	if(isset($_GET['id']) && (strlen($id) > 0))
@@ -73,6 +80,10 @@
 				$link2 = $answers[1]['id'];
 			}
 			
+			$character1 = $row['character1'];
+			$character2 = $row['character2'];
+			$ambient = $row['ambient'];
+			
 			mysqli_free_result($result);
 		}
 		else
@@ -94,6 +105,46 @@
 	$output = str_replace('$=answer2=$', $answer2, $output);
 	$output = str_replace('$=id1=$', $link1, $output);
 	$output = str_replace('$=id2=$', $link2, $output);
+	
+	// Character 1
+	for($i = 1;$i <= 7;$i++)
+	{
+		if($characters[$i - 1] == $character1)
+		{
+			$output = str_replace('$=c1'.(string)$i.'=$', 'selected', $output);
+		}
+		else
+		{
+			$output = str_replace('$=c1'.(string)$i.'=$', '', $output);
+		}
+	}
+	
+	// Character 2
+	for($i = 1;$i <= 7;$i++)
+	{
+		if($characters[$i - 1] == $character2)
+		{
+			$output = str_replace('$=c2'.(string)$i.'=$', 'selected', $output);
+		}
+		else
+		{
+			$output = str_replace('$=c2'.(string)$i.'=$', '', $output);
+		}
+	}
+	
+	// Ambient sound
+	for($i = 1;$i <= 7;$i++)
+	{
+		if($sounds[$i - 1] == $ambient)
+		{
+			$output = str_replace('$=a'.(string)$i.'=$', 'selected', $output);
+		}
+		else
+		{
+			$output = str_replace('$=a'.(string)$i.'=$', '', $output);
+		}
+	}
+	
 	$output = str_replace('$=error=$', $error, $output);
 	echo $output;
 	
