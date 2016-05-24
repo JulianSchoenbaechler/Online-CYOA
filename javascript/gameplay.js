@@ -19,7 +19,8 @@
 // Globals
 var debugString = "";
 var debugTimer;
-var datasets = 0;
+var datasets = 1;
+var currentSet = "";
 
 // Evaluate received story fragment
 // Change template, texts and answers
@@ -70,6 +71,9 @@ function evaluateFragment(fragment, callback) {
 			});
 			
 		});
+		
+		// Update current set
+		currentSet = fragment.id;
 	
 	}
 	else
@@ -108,7 +112,8 @@ $(document).ready(function() {
 			
 			var output = "[Debug]\nTimestamp: " + Date.now();
 			output += "\nStarting point: " + startID;
-			output += "\nDatasets loaded: " + datasets;
+			output += "\nDatasets loaded: " + datasets.toString();
+			output += "\nCurrent dataset: " + currentSet;
 			output += "\n\nProcess running...\n\n";
 			output += "Jump to:";
 			
