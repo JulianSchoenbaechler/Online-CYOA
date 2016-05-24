@@ -33,8 +33,16 @@ function evaluateFragment(fragment, callback) {
 		// Load HTML template
 		$("#container").load("template/" + fragment.template + ".html #container", function() {
 			
+			// Text
 			$("#title").html(fragment.title);
 			$("#text").html(fragment.text);
+			
+			// Characters
+			if(fragment.character1 != 'none')
+				$("#character1").html('<img src="img/character_' + fragment.character1 + '.png" alt="character" />');
+			
+			if(fragment.character2 != 'none')
+				$("#character2").html('<img src="img/character_' + fragment.character2 + '.png" alt="character" />');
 			
 			// Delete existing answer links
 			$("#answers").html(' ');
