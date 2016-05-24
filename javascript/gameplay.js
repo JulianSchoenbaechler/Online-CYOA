@@ -60,6 +60,9 @@ function evaluateFragment(fragment, callback) {
 				// Setup history canvas
 				initHistory();
 				
+				// Ambient sound sound
+				setAmbientSound(fragment.ambient);
+				
 				// Page has been loaded...
 				if(useCallback) {
 					
