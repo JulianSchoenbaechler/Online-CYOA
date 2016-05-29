@@ -18,6 +18,40 @@
 */
 	namespace CYOA_Engine;
 	
+	// Include library files
+	require_once 'Includes.php';
+	
+	// Function to generate book-passwords
+	function getBook($bookID)
+	{
+		$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise");
+		
+		// Check argument
+		if(!is_string($bookID))
+		{
+			trigger_error("[Runtime] 'getBook' expected argument 0 to be string.", E_USER_WARNING);
+		}
+		elseif(strpos($bookID, 'pw') !== 0)
+		{
+			trigger_error("[Runtime] 'getBook' expected argument 0 (string) starting with 'pw'.", E_USER_WARNING);
+		}
+		
+		$fromSession = SessionController::getParameter($bookID);
+		
+		if(($fromSession !== false) && ($fromSession != 'none'))
+		{
+			// Return book pw
+			return $fromSession;
+		}
+		else
+		{
+			// Generate new book pw
+			$pw = $books[mt_rand(0, (count($books) - 1))];
+			SessionController::setParameter($bookID, $pw);
+			return $pw;
+		}
+	}
+	
 	// Function to resolve template
 	function template($fragment)
 	{
@@ -34,9 +68,6 @@
 	}
 	
 	
-	
-	// Include library files
-	require_once 'Includes.php';
 	
 	// POST arguments
 	$task = trim($_POST['task']);
@@ -66,8 +97,19 @@
 						$player->finished = false;
 						$player->saveData($link);
 						
-						// Standard stort fragment: 'prolog1'
+						// Standard story fragment: 'prolog1'
 						$row = $dc->getRow('story', array('id' => 'prolog1'));
+						
+						// Search text for book-passwords
+						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
+						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
+						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
+						$row['text'] = str_replace('$=pw4=$', getBook('pw4'), $row['text']);
+						$row['text'] = str_replace('$=pw5=$', getBook('pw5'), $row['text']);
+						$row['text'] = str_replace('$=pw6=$', getBook('pw6'), $row['text']);
+						$row['text'] = str_replace('$=pw7=$', getBook('pw7'), $row['text']);
+						
+						// HTML template
 						$row['template'] = template('start');
 						
 						echo json_encode($row);
@@ -76,6 +118,17 @@
 					{
 						// Load last story fragment of player
 						$row = $dc->getRow('story', array('id' => $player->fragment));
+						
+						// Search text for book-passwords
+						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
+						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
+						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
+						$row['text'] = str_replace('$=pw4=$', getBook('pw4'), $row['text']);
+						$row['text'] = str_replace('$=pw5=$', getBook('pw5'), $row['text']);
+						$row['text'] = str_replace('$=pw6=$', getBook('pw6'), $row['text']);
+						$row['text'] = str_replace('$=pw7=$', getBook('pw7'), $row['text']);
+						
+						// HTML template
 						$row['template'] = template($player->fragment);
 						
 						echo json_encode($row);
@@ -95,6 +148,17 @@
 						
 						// Load last story fragment of player
 						$row = $dc->getRow('story', array('id' => $id));
+						
+						// Search text for book-passwords
+						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
+						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
+						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
+						$row['text'] = str_replace('$=pw4=$', getBook('pw4'), $row['text']);
+						$row['text'] = str_replace('$=pw5=$', getBook('pw5'), $row['text']);
+						$row['text'] = str_replace('$=pw6=$', getBook('pw6'), $row['text']);
+						$row['text'] = str_replace('$=pw7=$', getBook('pw7'), $row['text']);
+						
+						// HTML template
 						$row['template'] = template($id);
 						
 						// Load this story fragment
