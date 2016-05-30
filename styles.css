@@ -226,6 +226,10 @@ div#wrapper {
 	max-height: 100%;
 	margin: 0 auto;
 }
+div#wrapper.library {
+	text-align: center;
+	clear: both;
+}
 div#character1 {
 	display: inline-block;
 	min-width: 25%;
@@ -250,8 +254,21 @@ div#character2 img {
 	width: 20%;
 	margin: 0 3%;
 }
+div#rightShelf {
+	display: inline-block;
+	min-width: 40%;
+	max-width: 40%;
+	min-height: inherit;
+	background-color: #00FF00;
+}
 div#content {
 	text-align: center;
+}
+div#content.library {
+	width: 60%;
+	max-width: 60%;
+	text-align: left;
+	float: left;
 }
 div#textWrap {
 	display: inline-block;
@@ -265,6 +282,10 @@ div#textWrap {
 	box-shadow: 0 0 8px 1px #202020;
 	background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.5);
+}
+div#textWrap.library {
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
 }
 div#text {
 	overflow: scroll;
@@ -281,6 +302,11 @@ div#answers {
 	line-height: 0;
 	margin: 0 20px 0 0;
 	padding: 0;
+}
+div#answers.library {
+	margin: 0 0 0 10px;
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
 }
 div#answers a {
 	line-height: normal;
@@ -338,19 +364,4 @@ div#answers a div.answer:hover {
 }
 .hidden {
 	display: none;
-}
-
-/* TinyMCE skin formatting */
-[class ^= 'mce-'], [class *= ' mce-'],
-[class ^= 'mce-']:focus, [class *= ' mce-']:focus {
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	-o-box-shadow: none;
-	box-shadow: none;
-}
-.mce-panel {
-	-webkit-box-shadow: 0 0 6px 1px #808080;
-	-moz-box-shadow: 0 0 6px 1px #808080;
-	-o-box-shadow: 0 0 6px 1px #808080;
-	box-shadow: 0 0 6px 1px #808080;
 }

@@ -23,8 +23,8 @@
 	{
 		switch($fragment)
 		{
-			case 'test':
-				return 'bookshelf';
+			case 'libraryTest':
+				return 'library';
 				break;
 			
 			default:
