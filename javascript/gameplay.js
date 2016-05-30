@@ -21,6 +21,7 @@ var debugString = "";
 var debugTimer;
 var datasets = 1;
 var currentSet = "";
+var currentTemplate = "";
 
 // Evaluate received story fragment
 // Change template, texts and answers
@@ -72,7 +73,17 @@ function evaluateFragment(fragment, callback) {
 				}
 				
 				// Fade wrapper in
-				$("#wrapper").fadeTo(2000, 1.0);
+				if(fragment.template != currentTemplate) {
+					
+					$("#wrapper").delay(2000).fadeTo(2000, 1.0);
+					
+				} else {
+					
+					$("#wrapper").fadeTo(10, 1.0);
+					
+				}
+				
+				currentTemplate = fragment.template;
 				
 			});
 			
