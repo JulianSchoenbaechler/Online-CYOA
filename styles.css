@@ -365,7 +365,13 @@ div#answers a div.answer:hover {
 /* backgrounds */
 .bg-platform,
 .bg-standard {
-	background-image: url('img/platform.jpg');
+	background-image: url('img/plattform.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.bg-library {
+	background-image: url('img/library.jpg');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
