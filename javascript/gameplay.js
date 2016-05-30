@@ -87,7 +87,12 @@ function evaluateFragment(fragment, callback) {
 // Player has clicked an answer / option
 function gotoFragment(answerID) {
 	
-	$.post("php/game.php", { task: "answer", id: answerID.toString() }, evaluateFragment, "json");
+	$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+	
+		// Callback
+		evaluateFragment(fragment, layout);
+	
+	}, "json");
 	datasets++;
 	
 }
@@ -98,7 +103,7 @@ $(document).ready(function() {
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
 		// Set up story and history canvas
-		evaluateFragment(fragment);
+		evaluateFragment(fragment, layout);
 		
 	}, "json");
 	
