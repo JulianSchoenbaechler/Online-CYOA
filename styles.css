@@ -221,10 +221,12 @@ div#wrapper {
 	height: 100%;
 	max-height: 100%;
 	margin: 0 auto;
+	opacity: 0.0;
 }
-div#wrapper.bookshelf {
-	text-align: center;
-	clear: both;
+div#wrapper.library
+{
+	min-width: 58%;
+	max-width: 58%;
 }
 div#character1 {
 	display: inline-block;
@@ -232,11 +234,21 @@ div#character1 {
 	max-width: 25%;
 	min-height: 1px;
 }
+div#character1.library {
+	min-width: 30%;
+	max-width: 30%;
+	min-height: inherit;
+	cursor: pointer;
+}
 div#character1 img {
 	position: absolute;
 	bottom: 0;
 	width: 20%;
 	margin: 0 2%;
+}
+div#character1.library img {
+	width: 25%;
+	cursor: auto;
 }
 div#character2 {
 	display: inline-block;
@@ -260,6 +272,12 @@ div#rightShelf {
 div#content {
 	text-align: center;
 }
+div#content.library {
+	width: 55%;
+	max-width: 55%;
+	text-align: left;
+	float: left;
+}
 div#content.bookshelf {
 	width: 60%;
 	max-width: 60%;
@@ -277,7 +295,12 @@ div#textWrap {
 	padding: 10px;
 	box-shadow: 0 0 8px 1px #202020;
 	background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+div#textWrap.library {
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
+	margin-left: 100px;
 }
 div#textWrap.bookshelf {
 	width: calc(100% - 60px);
@@ -299,6 +322,11 @@ div#answers {
 	margin: 0 20px 0 0;
 	padding: 0;
 }
+div#answers.library {
+	margin: 0 0 0 100px;
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
+}
 div#answers.bookshelf {
 	margin: 0 0 0 10px;
 	width: calc(100% - 60px);
@@ -317,7 +345,7 @@ div#answers a div.answer {
 	margin: 10px 0;
 	padding: 20px 10px 0 10px;
 	background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
 	box-shadow: 0 0 8px 1px #202020;
 	-webkit-transition: all 0.3s ease-out;
 	-moz-transition: all 0.3s ease-out;

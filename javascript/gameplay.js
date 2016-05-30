@@ -71,6 +71,9 @@ function evaluateFragment(fragment, callback) {
 					
 				}
 				
+				// Fade wrapper in
+				$("#wrapper").fadeTo(2000, 1.0);
+				
 			});
 			
 		});

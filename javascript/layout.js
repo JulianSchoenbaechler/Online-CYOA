@@ -37,6 +37,20 @@ function layout() {
 		
 	}
 	
+	// Library click event
+	$("#character1.library").click(function(e) {
+		
+		gotoFragment('bookshelf');
+		
+	});
+	
+	$("#character1.library img").click(function(e) {
+		
+		// Cancel onclick fire
+		e.stopPropagation();
+		
+	});
+	
 }
 
 // When document ready
