@@ -21,6 +21,7 @@ var debugString = "";
 var debugTimer;
 var datasets = 1;
 var currentSet = "";
+var currentTemplate = "";
 
 // Evaluate received story fragment
 // Change template, texts and answers
@@ -33,6 +34,9 @@ function evaluateFragment(fragment, callback) {
 		
 		// Load HTML template
 		$("#container").load("template/" + fragment.template + ".html #wrapper", function() {
+			
+			// Change background image
+			$("#container").attr("class", "bg-" + fragment.template);
 			
 			// Text
 			$("#title").html(fragment.title);
@@ -67,6 +71,19 @@ function evaluateFragment(fragment, callback) {
 					callback();
 					
 				}
+				
+				// Fade wrapper in
+				if(fragment.template != currentTemplate) {
+					
+					$("#wrapper").delay(2000).fadeTo(2000, 1.0);
+					
+				} else {
+					
+					$("#wrapper").fadeTo(10, 1.0);
+					
+				}
+				
+				currentTemplate = fragment.template;
 				
 			});
 			

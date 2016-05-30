@@ -210,10 +210,6 @@ div#container {
 	left: 0;
 	right: 0;
 	margin: auto;
-	background-image: url('img/platform.jpg');
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
 }
 div#wrapper {
 	position: absolute;
@@ -225,6 +221,12 @@ div#wrapper {
 	height: 100%;
 	max-height: 100%;
 	margin: 0 auto;
+	opacity: 0.0;
+}
+div#wrapper.library
+{
+	min-width: 58%;
+	max-width: 58%;
 }
 div#character1 {
 	display: inline-block;
@@ -232,11 +234,21 @@ div#character1 {
 	max-width: 25%;
 	min-height: 1px;
 }
+div#character1.library {
+	min-width: 30%;
+	max-width: 30%;
+	min-height: inherit;
+	cursor: pointer;
+}
 div#character1 img {
 	position: absolute;
 	bottom: 0;
 	width: 20%;
 	margin: 0 2%;
+}
+div#character1.library img {
+	width: 25%;
+	cursor: auto;
 }
 div#character2 {
 	display: inline-block;
@@ -250,8 +262,27 @@ div#character2 img {
 	width: 20%;
 	margin: 0 3%;
 }
+div#rightShelf {
+	display: inline-block;
+	min-width: 40%;
+	max-width: 40%;
+	min-height: inherit;
+	background-color: #00FF00;
+}
 div#content {
 	text-align: center;
+}
+div#content.library {
+	width: 55%;
+	max-width: 55%;
+	text-align: left;
+	float: left;
+}
+div#content.bookshelf {
+	width: 60%;
+	max-width: 60%;
+	text-align: left;
+	float: left;
 }
 div#textWrap {
 	display: inline-block;
@@ -264,7 +295,16 @@ div#textWrap {
 	padding: 10px;
 	box-shadow: 0 0 8px 1px #202020;
 	background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+div#textWrap.library {
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
+	margin-left: 100px;
+}
+div#textWrap.bookshelf {
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
 }
 div#text {
 	overflow: scroll;
@@ -282,6 +322,16 @@ div#answers {
 	margin: 0 20px 0 0;
 	padding: 0;
 }
+div#answers.library {
+	margin: 0 0 0 100px;
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
+}
+div#answers.bookshelf {
+	margin: 0 0 0 10px;
+	width: calc(100% - 60px);
+	max-width: calc(100% - 60px);
+}
 div#answers a {
 	line-height: normal;
 	font-size: large;
@@ -295,7 +345,7 @@ div#answers a div.answer {
 	margin: 10px 0;
 	padding: 20px 10px 0 10px;
 	background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
 	box-shadow: 0 0 8px 1px #202020;
 	-webkit-transition: all 0.3s ease-out;
 	-moz-transition: all 0.3s ease-out;
@@ -340,17 +390,23 @@ div#answers a div.answer:hover {
 	display: none;
 }
 
-/* TinyMCE skin formatting */
-[class ^= 'mce-'], [class *= ' mce-'],
-[class ^= 'mce-']:focus, [class *= ' mce-']:focus {
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	-o-box-shadow: none;
-	box-shadow: none;
+/* backgrounds */
+.bg-platform,
+.bg-standard {
+	background-image: url('img/plattform.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 }
-.mce-panel {
-	-webkit-box-shadow: 0 0 6px 1px #808080;
-	-moz-box-shadow: 0 0 6px 1px #808080;
-	-o-box-shadow: 0 0 6px 1px #808080;
-	box-shadow: 0 0 6px 1px #808080;
+.bg-library {
+	background-image: url('img/library.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.bg-bookshelf {
+	background-image: url('img/bookshelf.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 }
