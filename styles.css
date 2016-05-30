@@ -210,10 +210,6 @@ div#container {
 	left: 0;
 	right: 0;
 	margin: auto;
-	background-image: url('img/platform.jpg');
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
 }
 div#wrapper {
 	position: absolute;
@@ -226,7 +222,7 @@ div#wrapper {
 	max-height: 100%;
 	margin: 0 auto;
 }
-div#wrapper.library {
+div#wrapper.bookshelf {
 	text-align: center;
 	clear: both;
 }
@@ -264,7 +260,7 @@ div#rightShelf {
 div#content {
 	text-align: center;
 }
-div#content.library {
+div#content.bookshelf {
 	width: 60%;
 	max-width: 60%;
 	text-align: left;
@@ -283,7 +279,7 @@ div#textWrap {
 	background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.5);
 }
-div#textWrap.library {
+div#textWrap.bookshelf {
 	width: calc(100% - 60px);
 	max-width: calc(100% - 60px);
 }
@@ -303,7 +299,7 @@ div#answers {
 	margin: 0 20px 0 0;
 	padding: 0;
 }
-div#answers.library {
+div#answers.bookshelf {
 	margin: 0 0 0 10px;
 	width: calc(100% - 60px);
 	max-width: calc(100% - 60px);
@@ -364,4 +360,19 @@ div#answers a div.answer:hover {
 }
 .hidden {
 	display: none;
+}
+
+/* backgrounds */
+.bg-platform,
+.bg-standard {
+	background-image: url('img/platform.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.bg-bookshelf {
+	background-image: url('img/bookshelf.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 }

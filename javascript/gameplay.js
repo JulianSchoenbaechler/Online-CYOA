@@ -34,6 +34,9 @@ function evaluateFragment(fragment, callback) {
 		// Load HTML template
 		$("#container").load("template/" + fragment.template + ".html #wrapper", function() {
 			
+			// Change background image
+			$("#container").attr("class", "bg-" + fragment.template);
+			
 			// Text
 			$("#title").html(fragment.title);
 			$("#text").html(fragment.text);

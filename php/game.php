@@ -18,23 +18,6 @@
 */
 	namespace CYOA_Engine;
 	
-	// Function to resolve template
-	function template($fragment)
-	{
-		switch($fragment)
-		{
-			case 'libraryTest':
-				return 'library';
-				break;
-			
-			default:
-				return 'standard';
-				break;
-		}
-	}
-	
-	
-	
 	// Include library files
 	require_once 'Includes.php';
 	
@@ -68,7 +51,6 @@
 						
 						// Standard stort fragment: 'prolog1'
 						$row = $dc->getRow('story', array('id' => 'prolog1'));
-						$row['template'] = template('start');
 						
 						echo json_encode($row);
 					}
@@ -76,7 +58,6 @@
 					{
 						// Load last story fragment of player
 						$row = $dc->getRow('story', array('id' => $player->fragment));
-						$row['template'] = template($player->fragment);
 						
 						echo json_encode($row);
 					}
@@ -95,7 +76,6 @@
 						
 						// Load last story fragment of player
 						$row = $dc->getRow('story', array('id' => $id));
-						$row['template'] = template($id);
 						
 						// Load this story fragment
 						echo json_encode($row);
