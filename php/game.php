@@ -24,7 +24,7 @@
 	// Function to generate book-passwords
 	function getBook($bookID)
 	{
-		$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise");
+		$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise", "Tobi Drift");
 		
 		// Check argument
 		if(!is_string($bookID))
@@ -45,8 +45,50 @@
 		}
 		else
 		{
+			$prevent = array();
+			$pw = '';
+			
+			// Excluded from password generator
+			switch($bookID)
+			{
+				case 'pw1':
+				case 'pw2':
+					array_push($prevent, SessionController::getParameter('pw1'));
+					array_push($prevent, SessionController::getParameter('pw2'));
+					break;
+				case 'pw3':
+				case 'pw4':
+					array_push($prevent, SessionController::getParameter('pw3'));
+					array_push($prevent, SessionController::getParameter('pw4'));
+					break;
+				default:
+					array_push($prevent, SessionController::getParameter('pw5'));
+					array_push($prevent, SessionController::getParameter('pw6'));
+					array_push($prevent, SessionController::getParameter('pw7'));
+					break;
+			}
+			
 			// Generate new book pw
-			$pw = $books[mt_rand(0, (count($books) - 1))];
+			$generated = true;
+			
+			do
+			{
+				$generated = true;
+				
+				// Randomize
+				$pw = $books[mt_rand(0, (count($books) - 1))];
+				
+				// Not already used?
+				for($i = 0;$i < count($prevent);$i++)
+				{
+					if($pw == $prevent[$i])
+					{
+						$generated = false;
+					}
+				}
+				
+			} while(!$generated);
+			
 			SessionController::setParameter($bookID, $pw);
 			return $pw;
 		}
