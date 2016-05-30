@@ -32,7 +32,7 @@ function evaluateFragment(fragment, callback) {
 	if(fragment != "logout") {
 		
 		// Load HTML template
-		$("#container").load("template/" + fragment.template + ".html #container", function() {
+		$("#container").load("template/" + fragment.template + ".html #wrapper", function() {
 			
 			// Text
 			$("#title").html(fragment.title);
@@ -51,7 +51,7 @@ function evaluateFragment(fragment, callback) {
 			// Resolve new answers
 			$.each($.parseJSON(fragment.answers), function(i, object) {
 				
-				$("#answers").append('<a href="#" onclick="gotoFragment(\'' + object.id + '\')">' + object.answer + '</a><br />');
+				$("#answers").append('<a href="#" onclick="gotoFragment(\'' + object.id + '\')"><div class="answer"><p>' + object.answer + '</p></div></a>');
 				
 			});
 			
@@ -87,7 +87,12 @@ function evaluateFragment(fragment, callback) {
 // Player has clicked an answer / option
 function gotoFragment(answerID) {
 	
-	$.post("php/game.php", { task: "answer", id: answerID.toString() }, evaluateFragment, "json");
+	$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+	
+		// Callback
+		evaluateFragment(fragment, layout);
+	
+	}, "json");
 	datasets++;
 	
 }
@@ -98,7 +103,7 @@ $(document).ready(function() {
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
 		// Set up story and history canvas
-		evaluateFragment(fragment);
+		evaluateFragment(fragment, layout);
 		
 	}, "json");
 	
