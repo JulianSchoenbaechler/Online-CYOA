@@ -73,7 +73,7 @@ function evaluateFragment(fragment, callback) {
 				}
 				
 				// Fade wrapper in
-				if((fragment.template != currentTemplate) && (fragment.template != 'bookshelf')) {
+				if(fragment.template != currentTemplate) {
 					
 					$("#wrapper").delay(2000).fadeTo(2000, 1.0);
 					
