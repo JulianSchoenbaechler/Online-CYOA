@@ -21,6 +21,7 @@
 	// Include library files
 	require_once 'Includes.php';
 	
+	
 	// Function to generate book-passwords
 	function getBook($bookID)
 	{
