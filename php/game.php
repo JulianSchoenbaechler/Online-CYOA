@@ -25,7 +25,7 @@
 	// Function to generate book-passwords
 	function getBook($bookID)
 	{
-		$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise", "Tobi Drift");
+		$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise", "Tobi Drift", "Lexikon", "Arrrrno der Pirat", "Taborn der Schreckliche", "Feel the Beat");
 		
 		// Check argument
 		if(!is_string($bookID))
@@ -37,61 +37,74 @@
 			trigger_error("[Runtime] 'getBook' expected argument 0 (string) starting with 'pw'.", E_USER_WARNING);
 		}
 		
-		$fromSession = SessionController::getParameter($bookID);
-		
-		if(($fromSession !== false) && ($fromSession != 'none'))
+		// Should generate pw?
+		if(SessionController::getParameter('pw1') == 'none')
 		{
-			// Return book pw
-			return $fromSession;
-		}
-		else
-		{
-			$prevent = array();
-			$pw = '';
+			$passwords = array();
 			
-			// Excluded from password generator
-			switch($bookID)
+			// Generate random book titles
+			for($i = 0;$i < 7;$i++)
 			{
-				case 'pw1':
-				case 'pw2':
-					array_push($prevent, SessionController::getParameter('pw1'));
-					array_push($prevent, SessionController::getParameter('pw2'));
-					break;
-				case 'pw3':
-				case 'pw4':
-					array_push($prevent, SessionController::getParameter('pw3'));
-					array_push($prevent, SessionController::getParameter('pw4'));
-					break;
-				default:
-					array_push($prevent, SessionController::getParameter('pw5'));
-					array_push($prevent, SessionController::getParameter('pw6'));
-					array_push($prevent, SessionController::getParameter('pw7'));
-					break;
+				$passwords[$i] = mt_rand(0, count($books) - 1);
 			}
 			
-			// Generate new book pw
-			$generated = true;
+			// Check for doubles
 			
-			do
+			// pw1
+			while($passwords[0] == $passwords[1])
 			{
-				$generated = true;
-				
-				// Randomize
-				$pw = $books[mt_rand(0, (count($books) - 1))];
-				
-				// Not already used?
-				for($i = 0;$i < count($prevent);$i++)
-				{
-					if($pw == $prevent[$i])
-					{
-						$generated = false;
-					}
-				}
-				
-			} while(!$generated);
+				$passwords[1] = mt_rand(0, count($books) - 1);
+			}
 			
-			SessionController::setParameter($bookID, $pw);
-			return $pw;
+			// pw2
+			while(($passwords[2] == $passwords[3]) ||
+				  (($passwords[0] == $passwords[2]) && ($passwords[1] == $passwords[3])) ||
+				  (($passwords[0] == $passwords[3]) && ($passwords[1] == $passwords[2])))
+			{
+				$passwords[3] = mt_rand(0, count($books) - 1);
+			}
+			
+			// pw3
+			while(($passwords[4] == $passwords[5]) ||
+				  (($passwords[0] == $passwords[4]) && ($passwords[1] == $passwords[5])) ||
+				  (($passwords[0] == $passwords[5]) && ($passwords[1] == $passwords[4])) ||
+				  (($passwords[2] == $passwords[4]) && ($passwords[3] == $passwords[5])) ||
+				  (($passwords[2] == $passwords[5]) && ($passwords[3] == $passwords[4])))
+			{
+				$passwords[5] = mt_rand(0, count($books) - 1);
+			}
+			
+			while(($passwords[5] == $passwords[6]) || ($passwords[4] == $passwords[6]) ||
+				  (($passwords[0] == $passwords[5]) && ($passwords[1] == $passwords[6])) ||
+				  (($passwords[0] == $passwords[6]) && ($passwords[1] == $passwords[5])) ||
+				  (($passwords[2] == $passwords[5]) && ($passwords[3] == $passwords[6])) ||
+				  (($passwords[2] == $passwords[6]) && ($passwords[3] == $passwords[5])))
+			{
+				$passwords[6] = mt_rand(0, count($books) - 1);
+			}
+			
+			// Save into session
+			for($i = 1;$i < 8;$i++)
+			{
+				SessionController::setParameter('pw'.(string)$i, $books[$passwords[$i - 1]]);
+			}
+			
+		}
+		
+		// Decode book ID
+		switch($bookID)
+		{
+			case 'pw1':
+				return (string)(SessionController::getParameter('pw1').', '.SessionController::getParameter('pw2'));
+				break;
+			
+			case 'pw2':
+				return (string)(SessionController::getParameter('pw3').', '.SessionController::getParameter('pw4'));
+				break;
+			
+			default:
+				return (string)(SessionController::getParameter('pw5').', '.SessionController::getParameter('pw6').', '.SessionController::getParameter('pw7'));
+				break;
 		}
 	}
 	
@@ -147,10 +160,6 @@
 						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
 						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
 						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
-						$row['text'] = str_replace('$=pw4=$', getBook('pw4'), $row['text']);
-						$row['text'] = str_replace('$=pw5=$', getBook('pw5'), $row['text']);
-						$row['text'] = str_replace('$=pw6=$', getBook('pw6'), $row['text']);
-						$row['text'] = str_replace('$=pw7=$', getBook('pw7'), $row['text']);
 						
 						// HTML template
 						$row['template'] = template('start');
@@ -166,10 +175,6 @@
 						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
 						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
 						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
-						$row['text'] = str_replace('$=pw4=$', getBook('pw4'), $row['text']);
-						$row['text'] = str_replace('$=pw5=$', getBook('pw5'), $row['text']);
-						$row['text'] = str_replace('$=pw6=$', getBook('pw6'), $row['text']);
-						$row['text'] = str_replace('$=pw7=$', getBook('pw7'), $row['text']);
 						
 						// HTML template
 						$row['template'] = template($player->fragment);
@@ -196,10 +201,6 @@
 						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
 						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
 						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
-						$row['text'] = str_replace('$=pw4=$', getBook('pw4'), $row['text']);
-						$row['text'] = str_replace('$=pw5=$', getBook('pw5'), $row['text']);
-						$row['text'] = str_replace('$=pw6=$', getBook('pw6'), $row['text']);
-						$row['text'] = str_replace('$=pw7=$', getBook('pw7'), $row['text']);
 						
 						// HTML template
 						$row['template'] = template($id);
