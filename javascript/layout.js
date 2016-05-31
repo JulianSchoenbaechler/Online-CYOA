@@ -16,6 +16,10 @@
 *
 */
 
+// Globals
+var bookCombination = [];
+var bookPasswords = [];
+
 // Layout / template management
 function layout() {
 	
@@ -37,9 +41,30 @@ function layout() {
 		
 	}
 	
+	// Load password books if in front of bookshelf
+	if(currentTemplate == "bookshelf") {
+		
+		$.post("php/game.php", { task: "password" }, function(object) {
+		
+			// Set book-passwords
+			bookPasswords = object;
+			
+			for(var i = 0;i < bookPasswords.length;i++)
+			{
+				alert(bookPasswords[i]);
+			}
+		
+		}, "json");
+			
+	}
+	
 	// Library click event
 	$("#character1.library").click(function(e) {
 		
+		// Clear books array
+		bookCombination = [];
+		
+		// Goto bookshelf
 		gotoFragment('bookshelf');
 		
 	});
@@ -48,6 +73,32 @@ function layout() {
 		
 		// Cancel onclick fire
 		e.stopPropagation();
+		
+	});
+	
+	// Click event for books
+	$(".book").click(function() {
+		
+		var id = $(this).attr('id');
+		
+		$(this).hide();
+		
+		// Extract book number
+		id = id.substring(4);
+		
+		// Add to array
+		bookCombination.push(parseInt(id) - 1);
+		
+		// Resolve chosen books
+		if((bookCombination.length > 1) && (bookCombination.length < 4)) {
+			
+			for(var i = 0;i < bookCombination.length;i++)
+			{
+				// Book password check
+				alert(bookCombination[i]);
+			}
+			
+		}
 		
 	});
 	

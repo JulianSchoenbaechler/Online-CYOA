@@ -21,12 +21,13 @@
 	// Include library files
 	require_once 'Includes.php';
 	
+	// Global
+	$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise", "Tobi Drift", "Lexikon", "Arrrrno der Pirat", "Taborn der Schreckliche", "Feel the Beat");
+	
 	
 	// Function to generate book-passwords
 	function getBook($bookID)
 	{
-		$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise", "Tobi Drift", "Lexikon", "Arrrrno der Pirat", "Taborn der Schreckliche", "Feel the Beat");
-		
 		// Check argument
 		if(!is_string($bookID))
 		{
@@ -303,6 +304,20 @@
 				// Client requests the whole player history
 				case 'historyPlayer':
 					echo json_encode($player->getHistory());
+					break;
+				
+				// Client requests the whole player history
+				case 'password':
+					$passwords = array();
+					array_push($passwords, array_search(SessionController::getParameter('pw1'), $books));
+					array_push($passwords, array_search(SessionController::getParameter('pw2'), $books));
+					array_push($passwords, array_search(SessionController::getParameter('pw3'), $books));
+					array_push($passwords, array_search(SessionController::getParameter('pw4'), $books));
+					array_push($passwords, array_search(SessionController::getParameter('pw5'), $books));
+					array_push($passwords, array_search(SessionController::getParameter('pw6'), $books));
+					array_push($passwords, array_search(SessionController::getParameter('pw7'), $books));
+					
+					echo json_encode($passwords);
 					break;
 				
 				default:
