@@ -21,13 +21,37 @@
 	// Include library files
 	require_once 'Includes.php';
 	
-	// Global
-	$books = array("Troban kehrt zur&uuml;ck", "Torbants Weltreise", "Tobi Drift", "Lexikon", "Arrrrno der Pirat", "Taborn der Schreckliche", "Feel the Beat");
 	
+	
+	// Global
+	$books = array(
+				   "Troban kehrt zur&uuml;ck",
+				   "Tobi Drifter",
+				   "Necronomicon ex mortis",
+				   "Arrrrno der Pirat",
+				   "D&uuml;p&uuml;ch der Schreckliche",
+				   "Feel the Beat",
+				   "Z&uuml;&uuml;&uuml;&uuml;g - Definition und Anwendung",
+				   "Bananenk&ouml;nig Fridolin im Land der sieben Tods&uuml;nden",
+				   "Der Graf von Murcielago",
+				   "GameDesign for Dummies",
+				   "Marcelix und Trobelix",
+				   "How to steal a palm tree - and getting away with it",
+				   "Wetterph&auml;nomene",
+				   "Die Geschichte des Yoghurts",
+				   "Tschuuls Verne - Reise zum Mittelpunkt des Mars",
+				   "Derek auf der Suche nach dem mystischen Mangus",
+				   "Johnny und Clyde",
+				   "Max und Moritz",
+				   "Magn&uuml;sse mag N&uuml;sse",
+				   ""
+				   );
 	
 	// Function to generate book-passwords
 	function getBook($bookID)
 	{
+		global $books;
+		
 		// Check argument
 		if(!is_string($bookID))
 		{
@@ -42,46 +66,19 @@
 		if(SessionController::getParameter('pw1') == 'none')
 		{
 			$passwords = array();
+			$used = array();
 			
 			// Generate random book titles
-			for($i = 0;$i < 7;$i++)
+			for($i = 0;$i < count($books);$i++)
 			{
-				$passwords[$i] = mt_rand(0, count($books) - 1);
-			}
-			
-			// Check for doubles
-			
-			// pw1
-			while($passwords[0] == $passwords[1])
-			{
-				$passwords[1] = mt_rand(0, count($books) - 1);
-			}
-			
-			// pw2
-			while(($passwords[2] == $passwords[3]) ||
-				  (($passwords[0] == $passwords[2]) && ($passwords[1] == $passwords[3])) ||
-				  (($passwords[0] == $passwords[3]) && ($passwords[1] == $passwords[2])))
-			{
-				$passwords[3] = mt_rand(0, count($books) - 1);
-			}
-			
-			// pw3
-			while(($passwords[4] == $passwords[5]) ||
-				  (($passwords[0] == $passwords[4]) && ($passwords[1] == $passwords[5])) ||
-				  (($passwords[0] == $passwords[5]) && ($passwords[1] == $passwords[4])) ||
-				  (($passwords[2] == $passwords[4]) && ($passwords[3] == $passwords[5])) ||
-				  (($passwords[2] == $passwords[5]) && ($passwords[3] == $passwords[4])))
-			{
-				$passwords[5] = mt_rand(0, count($books) - 1);
-			}
-			
-			while(($passwords[5] == $passwords[6]) || ($passwords[4] == $passwords[6]) ||
-				  (($passwords[0] == $passwords[5]) && ($passwords[1] == $passwords[6])) ||
-				  (($passwords[0] == $passwords[6]) && ($passwords[1] == $passwords[5])) ||
-				  (($passwords[2] == $passwords[5]) && ($passwords[3] == $passwords[6])) ||
-				  (($passwords[2] == $passwords[6]) && ($passwords[3] == $passwords[5])))
-			{
-				$passwords[6] = mt_rand(0, count($books) - 1);
+				do
+				{
+					$passwords[$i] = mt_rand(0, count($books) - 1);
+				
+				// Check for doubles
+				} while(in_array($passwords[$i], $used));
+				
+				array_push($used, $passwords[$i]);
 			}
 			
 			// Save into session
@@ -109,20 +106,6 @@
 		}
 	}
 	
-	// Function to resolve template
-	function template($fragment)
-	{
-		switch($fragment)
-		{
-			case 'test':
-				return 'bookshelf';
-				break;
-			
-			default:
-				return 'standard';
-				break;
-		}
-	}
 	
 	
 	
@@ -158,12 +141,9 @@
 						$row = $dc->getRow('story', array('id' => 'prolog1'));
 						
 						// Search text for book-passwords
-						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
-						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
-						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
-						
-						// HTML template
-						$row['template'] = template('start');
+						$row['text'] = str_replace('$=pw1=$', '<em>'.getBook('pw1').'</em>', $row['text']);
+						$row['text'] = str_replace('$=pw2=$', '<em>'.getBook('pw2').'</em>', $row['text']);
+						$row['text'] = str_replace('$=pw3=$', '<em>'.getBook('pw3').'</em>', $row['text']);
 						
 						echo json_encode($row);
 					}
@@ -173,12 +153,9 @@
 						$row = $dc->getRow('story', array('id' => $player->fragment));
 						
 						// Search text for book-passwords
-						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
-						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
-						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
-						
-						// HTML template
-						$row['template'] = template($player->fragment);
+						$row['text'] = str_replace('$=pw1=$', '<em>'.getBook('pw1').'</em>', $row['text']);
+						$row['text'] = str_replace('$=pw2=$', '<em>'.getBook('pw2').'</em>', $row['text']);
+						$row['text'] = str_replace('$=pw3=$', '<em>'.getBook('pw3').'</em>', $row['text']);
 						
 						echo json_encode($row);
 					}
@@ -199,12 +176,9 @@
 						$row = $dc->getRow('story', array('id' => $id));
 						
 						// Search text for book-passwords
-						$row['text'] = str_replace('$=pw1=$', getBook('pw1'), $row['text']);
-						$row['text'] = str_replace('$=pw2=$', getBook('pw2'), $row['text']);
-						$row['text'] = str_replace('$=pw3=$', getBook('pw3'), $row['text']);
-						
-						// HTML template
-						$row['template'] = template($id);
+						$row['text'] = str_replace('$=pw1=$', '<em>'.getBook('pw1').'</em>', $row['text']);
+						$row['text'] = str_replace('$=pw2=$', '<em>'.getBook('pw2').'</em>', $row['text']);
+						$row['text'] = str_replace('$=pw3=$', '<em>'.getBook('pw3').'</em>', $row['text']);
 						
 						// Load this story fragment
 						echo json_encode($row);
@@ -308,16 +282,18 @@
 				
 				// Client requests the whole player history
 				case 'password':
-					$passwords = array();
-					array_push($passwords, array_search(SessionController::getParameter('pw1'), $books));
-					array_push($passwords, array_search(SessionController::getParameter('pw2'), $books));
-					array_push($passwords, array_search(SessionController::getParameter('pw3'), $books));
-					array_push($passwords, array_search(SessionController::getParameter('pw4'), $books));
-					array_push($passwords, array_search(SessionController::getParameter('pw5'), $books));
-					array_push($passwords, array_search(SessionController::getParameter('pw6'), $books));
-					array_push($passwords, array_search(SessionController::getParameter('pw7'), $books));
+					$pass = array();
+					getBook('pw1');
+					array_push($pass, array_search(SessionController::getParameter('pw1'), $books));
+					array_push($pass, array_search(SessionController::getParameter('pw2'), $books));
+					array_push($pass, array_search(SessionController::getParameter('pw3'), $books));
+					array_push($pass, array_search(SessionController::getParameter('pw4'), $books));
+					array_push($pass, array_search(SessionController::getParameter('pw5'), $books));
+					array_push($pass, array_search(SessionController::getParameter('pw6'), $books));
+					array_push($pass, array_search(SessionController::getParameter('pw7'), $books));
 					
-					echo json_encode($passwords);
+					echo json_encode($pass);
+					
 					break;
 				
 				default:

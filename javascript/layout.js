@@ -48,11 +48,6 @@ function layout() {
 		
 			// Set book-passwords
 			bookPasswords = object;
-			
-			for(var i = 0;i < bookPasswords.length;i++)
-			{
-				alert(bookPasswords[i]);
-			}
 		
 		}, "json");
 			
@@ -90,16 +85,79 @@ function layout() {
 		bookCombination.push(parseInt(id) - 1);
 		
 		// Resolve chosen books
-		if((bookCombination.length > 1) && (bookCombination.length < 4)) {
+		switch(bookCombination.length) {
 			
-			for(var i = 0;i < bookCombination.length;i++)
-			{
-				// Book password check
-				alert(bookCombination[i]);
-			}
+			// Two books
+			case 2:
+				
+				// pw1
+				if(($.inArray(bookPasswords[0], bookCombination) !== -1) &&
+				   ($.inArray(bookPasswords[1], bookCombination) !== -1))
+				{
+					alert('pw1');
+				}
+				
+				// pw2
+				else if(($.inArray(bookPasswords[2], bookCombination) !== -1) &&
+						($.inArray(bookPasswords[3], bookCombination) !== -1))
+				{
+					alert('pw2');
+				}
+				
+				break;
 			
+			// Three books
+			case 3:
+				
+				// pw3
+				if(($.inArray(bookPasswords[4], bookCombination) !== -1) &&
+				   ($.inArray(bookPasswords[5], bookCombination) !== -1) &&
+				   ($.inArray(bookPasswords[6], bookCombination) !== -1))
+				{
+					alert('pw3');
+				}
+				
+				break;
+			
+			default:
+				break;
+				
 		}
 		
+	});
+	
+	// Book-name mousover position
+	var booknamePos = function(event) {
+		
+		var x = event.pageX - 20;
+		var y = event.pageY + 20;
+		
+		$("div.bookname").css( { top: y, left: x } );
+	};
+
+	var showBookname = function(event) {
+		
+		// Remove if still active
+		$("div.bookname").remove();
+		
+		var id = $(this).attr('id');
+		var bookname = $("#" + id + "name").html();
+		
+		$('<div class="bookname"><em>' + bookname + '</em></div>').appendTo("body");
+		booknamePos(event);
+		
+	};
+
+	var hideBookname = function() {
+		
+	   $("div.bookname").remove();
+	   
+	};
+
+	$(".book").bind({
+		mousemove : booknamePos,
+		mouseenter : showBookname,
+		mouseleave: hideBookname
 	});
 	
 }

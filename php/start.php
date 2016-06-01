@@ -78,6 +78,15 @@
 			$player = new Player($newID);
 			$player->newData($link);
 			SessionController::setSessionID($newID);
+			
+			// Book passwords
+			SessionController::setParameter('pw1', 'none');
+			SessionController::setParameter('pw2', 'none');
+			SessionController::setParameter('pw3', 'none');
+			SessionController::setParameter('pw4', 'none');
+			SessionController::setParameter('pw5', 'none');
+			SessionController::setParameter('pw6', 'none');
+			SessionController::setParameter('pw7', 'none');
 		}
 	}
 	else

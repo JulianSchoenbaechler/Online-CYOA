@@ -65,6 +65,8 @@ function evaluateFragment(fragment, callback) {
 				// Setup history canvas
 				initHistory();
 				
+				currentTemplate = fragment.template;
+				
 				// Page has been loaded...
 				if(useCallback) {
 					
@@ -82,8 +84,6 @@ function evaluateFragment(fragment, callback) {
 					$("#wrapper").fadeTo(10, 1.0);
 					
 				}
-				
-				currentTemplate = fragment.template;
 				
 			});
 			
