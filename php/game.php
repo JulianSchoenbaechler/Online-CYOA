@@ -44,7 +44,7 @@
 				   "Johnny und Clyde",
 				   "Max und Moritz",
 				   "Magn&uuml;sse mag N&uuml;sse",
-				   ""
+				   "Single Malte - Ein Retter in Not"
 				   );
 	
 	// Function to generate book-passwords
