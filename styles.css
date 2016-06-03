@@ -264,10 +264,35 @@ div#character2 img {
 }
 div#rightShelf {
 	display: inline-block;
+	position: absolute;
 	min-width: 40%;
 	max-width: 40%;
 	min-height: inherit;
-	background-color: #00FF00;
+	margin: 30px 0 0 10px;
+	background-image: url('img/bookshelf.png');
+	background-size: 400px auto;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+div.book {
+	position: absolute;
+	cursor: pointer;
+	background-size: auto;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+div.bookname {
+	position: absolute;
+	max-width: 200px;
+	font-size: 14px;
+	padding: 4px 8px;
+	box-shadow: 0 0 8px 1px #202020;
+	background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+div.bookname p {
+	margin: 0 0 4px 0;
+	padding: 0;
 }
 div#content {
 	text-align: center;
