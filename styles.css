@@ -230,8 +230,8 @@ div#wrapper.library
 }
 div#character1 {
 	display: inline-block;
-	min-width: 25%;
-	max-width: 25%;
+	min-width: 30%;
+	max-width: 30%;
 	min-height: 1px;
 }
 div#character1.library {
@@ -243,24 +243,26 @@ div#character1.library {
 div#character1 img {
 	position: absolute;
 	bottom: 0;
-	width: 20%;
-	margin: 0 2%;
+	left: 0;
+	width: 25%;
 }
 div#character1.library img {
-	width: 25%;
+	left: auto;
+	right: 0;
+	width: 30%;
 	cursor: auto;
 }
 div#character2 {
 	display: inline-block;
-	min-width: 25%;
-	max-width: 25%;
+	min-width: 30%;
+	max-width: 30%;
 	min-height: 1px;
 }
 div#character2 img {
 	position: absolute;
 	bottom: 0;
-	width: 20%;
-	margin: 0 3%;
+	right: 0;
+	width: 25%;
 }
 div#rightShelf {
 	display: inline-block;
