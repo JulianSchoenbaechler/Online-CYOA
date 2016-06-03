@@ -65,14 +65,6 @@ function evaluateFragment(fragment, callback) {
 				// Setup history canvas
 				initHistory();
 				
-				currentTemplate = fragment.template;
-				
-				// Page has been loaded...
-				if(useCallback) {
-					
-					callback();
-					
-				}
 				
 				// Fade wrapper in
 				if((fragment.template != currentTemplate) && (fragment.template != 'bookshelf')) {
@@ -82,6 +74,15 @@ function evaluateFragment(fragment, callback) {
 				} else {
 					
 					$("#wrapper").fadeTo(10, 1.0);
+					
+				}
+				
+				currentTemplate = fragment.template;
+				
+				// Page has been loaded...
+				if(useCallback) {
+					
+					callback();
 					
 				}
 				

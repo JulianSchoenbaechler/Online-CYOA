@@ -31,20 +31,20 @@
 				   "Arrrrno der Pirat",
 				   "D&uuml;p&uuml;ch der Schreckliche",
 				   "Feel the Beat",
-				   "Z&uuml;&uuml;&uuml;&uuml;g - Definition und Anwendung",
-				   "Bananenk&ouml;nig Fridolin im Land der sieben Tods&uuml;nden",
+				   "Z&uuml;&uuml;&uuml;&uuml;g",
+				   "Bananenk&ouml;nig Fridolin",
 				   "Der Graf von Murcielago",
 				   "GameDesign for Dummies",
 				   "Marcelix und Trobelix",
-				   "How to steal a palm tree - and getting away with it",
+				   "How to steal a palm tree",
 				   "Wetterph&auml;nomene",
 				   "Die Geschichte des Yoghurts",
-				   "Tschuuls Verne - Reise zum Mittelpunkt des Mars",
+				   "Tschuuls Verne",
 				   "Derek auf der Suche nach dem mystischen Mangus",
 				   "Johnny und Clyde",
 				   "Max und Moritz",
 				   "Magn&uuml;sse mag N&uuml;sse",
-				   "Single Malte - Ein Retter in Not"
+				   "Single Malte"
 				   );
 	
 	// Function to generate book-passwords
