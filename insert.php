@@ -23,7 +23,7 @@
 	
 	// Variables
 	$characters = array('none', 'gardai', 'declan', 'amelia', 'masahiro', 'antoine', 'fatime');
-	$sounds = array('none', '', '', '', '', '', '');
+	$sounds = array('none', 'helicopter', 'radio', 'metal', 'outside');
 	
 	// Get arguments
 	$id = trim($_GET['id']);
@@ -133,7 +133,7 @@
 	}
 	
 	// Ambient sound
-	for($i = 1;$i <= 7;$i++)
+	for($i = 1;$i <= 5;$i++)
 	{
 		if($sounds[$i - 1] == $ambient)
 		{

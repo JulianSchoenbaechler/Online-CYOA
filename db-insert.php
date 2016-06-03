@@ -171,7 +171,7 @@
 	}
 	
 	// Ambient sound
-	for($i = 1;$i <= 7;$i++)
+	for($i = 1;$i <= 5;$i++)
 	{
 		if($sounds[$i - 1] == $ambient)
 		{
