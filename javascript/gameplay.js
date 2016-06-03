@@ -19,7 +19,9 @@
 // Globals
 var debugString = "";
 var debugTimer;
-var datasets = 0;
+var datasets = 1;
+var currentSet = "";
+var currentTemplate = "";
 
 // Evaluate received story fragment
 // Change template, texts and answers
@@ -31,7 +33,10 @@ function evaluateFragment(fragment, callback) {
 	if(fragment != "logout") {
 		
 		// Load HTML template
-		$("#container").load("template/" + fragment.template + ".html #container", function() {
+		$("#container").load("template/" + fragment.template + ".html #wrapper", function() {
+			
+			// Change background image
+			$("#container").attr("class", "bg-" + fragment.template);
 			
 			// Text
 			$("#title").html(fragment.title);
@@ -50,7 +55,7 @@ function evaluateFragment(fragment, callback) {
 			// Resolve new answers
 			$.each($.parseJSON(fragment.answers), function(i, object) {
 				
-				$("#answers").append('<a href="#" onclick="gotoFragment(\'' + object.id + '\')">' + object.answer + '</a><br />');
+				$("#answers").append('<a href="#" onclick="gotoFragment(\'' + object.id + '\')"><div class="answer"><p>' + object.answer + '</p></div></a>');
 				
 			});
 			
@@ -59,6 +64,20 @@ function evaluateFragment(fragment, callback) {
 				
 				// Setup history canvas
 				initHistory();
+				
+				
+				// Fade wrapper in
+				if((fragment.template != currentTemplate) && (fragment.template != 'bookshelf')) {
+					
+					$("#wrapper").delay(2000).fadeTo(2000, 1.0);
+					
+				} else {
+					
+					$("#wrapper").fadeTo(10, 1.0);
+					
+				}
+				
+				currentTemplate = fragment.template;
 				
 				// Page has been loaded...
 				if(useCallback) {
@@ -70,6 +89,9 @@ function evaluateFragment(fragment, callback) {
 			});
 			
 		});
+		
+		// Update current set
+		currentSet = fragment.id;
 	
 	}
 	else
@@ -83,7 +105,12 @@ function evaluateFragment(fragment, callback) {
 // Player has clicked an answer / option
 function gotoFragment(answerID) {
 	
-	$.post("php/game.php", { task: "answer", id: answerID.toString() }, evaluateFragment, "json");
+	$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+	
+		// Callback
+		evaluateFragment(fragment, layout);
+	
+	}, "json");
 	datasets++;
 	
 }
@@ -94,7 +121,7 @@ $(document).ready(function() {
 	$.post("php/game.php", { task: "reload" }, function(fragment) {
 		
 		// Set up story and history canvas
-		evaluateFragment(fragment);
+		evaluateFragment(fragment, layout);
 		
 	}, "json");
 	
@@ -108,7 +135,8 @@ $(document).ready(function() {
 			
 			var output = "[Debug]\nTimestamp: " + Date.now();
 			output += "\nStarting point: " + startID;
-			output += "\nDatasets loaded: " + datasets;
+			output += "\nDatasets loaded: " + datasets.toString();
+			output += "\nCurrent dataset: " + currentSet;
 			output += "\n\nProcess running...\n\n";
 			output += "Jump to:";
 			
