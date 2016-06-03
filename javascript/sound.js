@@ -82,7 +82,7 @@ function setAmbientSound(ambient) {
 				
 				// Choose: no sound?
 				if(ambient != 'none') {
-					alert('test0');
+					
 					ambientSound.channel2 = new buzz.sound('sound/' + ambient + '.mp3', {
 						loop: true,
 						volume: 0
@@ -102,7 +102,7 @@ function setAmbientSound(ambient) {
 				
 				// Choose: no sound?
 				if(ambient != 'none') {
-					alert('test1');
+					
 					ambientSound.channel1 = new buzz.sound('sound/' + ambient + '.mp3', {
 						loop: true,
 						volume: 0
