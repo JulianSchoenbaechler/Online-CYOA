@@ -37,6 +37,9 @@
 	$post_character2 = trim($_POST['character2']);
 	$post_ambient = trim($_POST['ambient']);
 	
+	// TinyMCE nbsp fix
+	$post_content = str_replace('&nbsp;', ' ', $post_content);
+	
 	// Displayed elements
 	$title = $post_title;
 	$content = $post_content;
