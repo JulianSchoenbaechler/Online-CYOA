@@ -334,7 +334,7 @@ div#textWrap.bookshelf {
 	max-width: calc(100% - 60px);
 }
 div#text {
-	overflow: scroll;
+	overflow: auto;
 	max-height: inherit;
 }
 div#text p {
