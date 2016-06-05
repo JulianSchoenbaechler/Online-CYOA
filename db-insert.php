@@ -23,7 +23,8 @@
 	
 	// Variables
 	$characters = array('none', 'gardai', 'declan', 'amelia', 'masahiro', 'antoine', 'fatime');
-	$sounds = array('none', '', '', '', '', '', '');
+	$sounds = array('none', 'helicopter', 'radio', 'metal', 'outside');
+	$templates = array('standard', 'outside', 'corridor', 'library', 'office', 'cabin');
 	
 	// Post arguments
 	$post_id = trim($_POST['id']);
@@ -36,6 +37,7 @@
 	$post_character1 = trim($_POST['character1']);
 	$post_character2 = trim($_POST['character2']);
 	$post_ambient = trim($_POST['ambient']);
+	$post_template = trim($_POST['template']);
 	
 	// TinyMCE nbsp fix
 	$post_content = str_replace('&nbsp;', ' ', $post_content);
@@ -50,6 +52,7 @@
 	$character1 = $post_character1;
 	$character2 = $post_character2;
 	$ambient = $post_ambient;
+	$template = $post_template;
 	$error = "";
 	
 	// Complete dataset?
@@ -73,6 +76,7 @@
 		$post_character1 = mysqli_real_escape_string($link, $post_character1);
 		$post_character2 = mysqli_real_escape_string($link, $post_character2);
 		$post_ambient = mysqli_real_escape_string($link, $post_ambient);
+		$post_template = mysqli_real_escape_string($link, $post_template);
 
 		// ID formatting
 		$post_id = str_replace(' ', '', strtolower($post_id));
@@ -109,11 +113,11 @@
 		// If row was found
 		if(mysqli_num_rows($result) > 0)
 		{
-			$sql = "UPDATE `story` SET `title`='$post_title',`text`='$post_content',`answers`='".json_encode($answers)."', `character1`='$post_character1', `character2`='$post_character2', `ambient`='$post_ambient' WHERE `id`='$post_id' LIMIT 1";
+			$sql = "UPDATE `story` SET `title`='$post_title',`text`='$post_content',`answers`='".json_encode($answers)."', `template`='$post_template', `character1`='$post_character1', `character2`='$post_character2', `ambient`='$post_ambient' WHERE `id`='$post_id' LIMIT 1";
 		}
 		else
 		{
-			$sql = "INSERT INTO `story`(`id`, `title`, `text`, `answers`, `character1`, `character2`, `ambient`) VALUES ('$post_id','$post_title','$post_content','".json_encode($answers)."','$post_character1','$post_character2','$post_ambient')";
+			$sql = "INSERT INTO `story`(`id`, `title`, `text`, `answers`,`template`, `character1`, `character2`, `ambient`) VALUES ('$post_id','$post_title','$post_content','".json_encode($answers)."','$post_template','$post_character1','$post_character2','$post_ambient')";
 		}
 		
 		mysqli_free_result($result);
@@ -183,6 +187,19 @@
 		else
 		{
 			$output = str_replace('$=a'.(string)$i.'=$', '', $output);
+		}
+	}
+	
+	// Template
+	for($i = 1;$i <= 6;$i++)
+	{
+		if($templates[$i - 1] == $template)
+		{
+			$output = str_replace('$=t'.(string)$i.'=$', 'selected', $output);
+		}
+		else
+		{
+			$output = str_replace('$=t'.(string)$i.'=$', '', $output);
 		}
 	}
 	

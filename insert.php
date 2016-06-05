@@ -24,6 +24,7 @@
 	// Variables
 	$characters = array('none', 'gardai', 'declan', 'amelia', 'masahiro', 'antoine', 'fatime');
 	$sounds = array('none', 'helicopter', 'radio', 'metal', 'outside');
+	$templates = array('standard', 'outside', 'corridor', 'library', 'office', 'cabin');
 	
 	// Get arguments
 	$id = trim($_GET['id']);
@@ -38,6 +39,7 @@
 	$character1 = "";
 	$character2 = "";
 	$ambient = "";
+	$template = "";
 	$error = "";
 	
 	if(isset($_GET['id']) && (strlen($id) > 0))
@@ -83,6 +85,7 @@
 			$character1 = $row['character1'];
 			$character2 = $row['character2'];
 			$ambient = $row['ambient'];
+			$ambient = $row['template'];
 			
 			mysqli_free_result($result);
 		}
@@ -142,6 +145,19 @@
 		else
 		{
 			$output = str_replace('$=a'.(string)$i.'=$', '', $output);
+		}
+	}
+	
+	// Template
+	for($i = 1;$i <= 6;$i++)
+	{
+		if($templates[$i - 1] == $template)
+		{
+			$output = str_replace('$=t'.(string)$i.'=$', 'selected', $output);
+		}
+		else
+		{
+			$output = str_replace('$=t'.(string)$i.'=$', '', $output);
 		}
 	}
 	
