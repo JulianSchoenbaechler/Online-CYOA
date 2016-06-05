@@ -145,6 +145,23 @@
 
 
 
+/* FONT: TALKING TO THE MOON */
+
+/* Regular */
+@font-face {
+	font-family: 'Talking To The Moon';
+	
+	src: url('fonts/TalkingToTheMoon_webfont.eot');
+	src: url('fonts/TalkingToTheMoon_webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/TalkingToTheMoon_webfont.woff') format('woff'),
+		 url('fonts/TalkingToTheMoon_webfont.ttf') format('truetype'),
+		 url('fonts/TalkingToTheMoon_webfont.svg#TalkingToTheMoonRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
 /* HTML ELEMENTS */
 
 /* top elements */
