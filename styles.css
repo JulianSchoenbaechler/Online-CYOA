@@ -400,6 +400,21 @@ div#answers a div.answer:hover {
 	background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
 }
+div#tree {
+	position: fixed;
+	top: 200px;
+	left: 0;
+	width: 148px;
+	height: 220px;
+	min-width: 148px;
+	min-height: 220px;
+	cursor: pointer;
+	background-image: url('img/tree.png');
+	background-size: auto 220px;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 99;
+}
 div#historyWrap {
 	position: fixed;
 	top: 0;
