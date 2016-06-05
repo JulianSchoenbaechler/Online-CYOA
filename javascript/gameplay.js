@@ -65,7 +65,6 @@ function evaluateFragment(fragment, callback) {
 				// Setup history canvas
 				initHistory();
 				
-				
 				// Fade wrapper in
 				if((fragment.template != currentTemplate) && (fragment.template != 'bookshelf')) {
 					
@@ -78,6 +77,9 @@ function evaluateFragment(fragment, callback) {
 				}
 				
 				currentTemplate = fragment.template;
+				
+				// Ambient sound sound
+				setAmbientSound(fragment.ambient);
 				
 				// Page has been loaded...
 				if(useCallback) {
