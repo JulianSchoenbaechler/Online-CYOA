@@ -25,6 +25,152 @@ var elementStack = [];
 // Every objects holds three attributes:
 // id, circle and description
 
+// Drawing a line
+function logConnection(x1, y1, x2, y2) {
+	
+	var diffX = Math.abs(x1 - x2);
+	var diffY = Math.abs(y1 - y2);
+	
+	// Drawing points
+	// The line is divided by four creating four segments.
+	var pointsX;
+	var pointsY;
+	
+	if(x1 < x2) {
+		pointsX = [x1, x1 + (diffX / 4), x1 + (diffX / 2), x2 - (diffX / 4), x2];
+	} else {
+		pointsX = [x1, x1 - (diffX / 4), x2 + (diffX / 2), x2 + (diffX / 4), x2];
+	}
+	
+	if(y1 < y2) {
+		pointsY = [y1, y1 + (diffY / 4), y1 + (diffY / 2), y2 - (diffY / 4), y2];
+	} else {
+		pointsY = [y1, y1 - (diffY / 4), y2 + (diffY / 2), y2 + (diffY / 4), y2];
+	}
+	
+	// Generate a set of 4 random numbers
+	var randomNumbers = [0, (Math.random() * 2) + Math.random(), (Math.random() * 2) + Math.random(), (Math.random() * 2) + Math.random(), 0];
+	
+	// Randomize drawing-points
+	if(Math.random() < 0.5) {
+		
+		for(var i = 0;i < 5;i++) {
+			
+			if(((x1 < x2) && (y1 < y2)) ||
+			   ((x1 > x2) && (y1 > y2))) {
+				
+				pointsX[i] += randomNumbers[i];
+				pointsY[i] -= randomNumbers[i];
+				
+			} else {
+				
+				pointsX[i] += randomNumbers[i];
+				pointsY[i] += randomNumbers[i];
+				
+			}
+		}
+		
+	} else {
+		
+		for(var i = 0;i < 5;i++) {
+			
+			if(((x1 < x2) && (y1 < y2)) ||
+			   ((x1 > x2) && (y1 > y2))) {
+				
+				pointsX[i] -= randomNumbers[i];
+				pointsY[i] += randomNumbers[i];
+				
+			} else {
+				
+				pointsX[i] -= randomNumbers[i];
+				pointsY[i] -= randomNumbers[i];
+				
+			}
+		}
+		
+	}
+	
+	// Draw line
+	var vector = "M";
+	
+	for(var i = 0;i < 5;i++)
+	{
+		vector += pointsX[i].toString() + " " + pointsY[i].toString();
+		
+		// Specify a quadratic bezier curve on first iteration
+		if(i == 0) {
+			vector += "Q";
+		} else {
+			vector += " ";
+		}
+	}
+	
+	// Draw vector onto canvas
+	return paper.path(vector).attr({"type": "path", "stroke-width": 1, "fill": "black" });
+	
+}
+
+// Drawing a circle
+function logCircle(x, y) {
+	
+	if(arguments.length == 2) {
+		
+		var radius = 9;															// Initial radius
+		var step = 2 * Math.PI / 20;											// Resolution of circle
+		var start = Math.random() * (2 * Math.PI);								// Start position
+		var end = (0.1 * Math.random() + 0.95) * ((2 * Math.PI) + start);		// End position
+		
+		var vector = "M";														// Vector string
+		
+		var gotoX, gotoY;														// Coordinates of the one single point
+		var r = radius;															// Variable / Randomized radius
+		
+		// Draw circle from start to end
+		for(var angle = start; angle <= end; angle += step) {
+			
+			// Randomize radius
+			if(Math.random() < 0.5) {
+				r += 0.4 * Math.random();
+			} else {
+				r -= 0.4 * Math.random();
+			}
+			
+			// Calculate next point to draw
+			gotoX = x + r * Math.cos(angle);
+			gotoY = y - r * 0.8 * Math.sin(angle);
+			
+			// Specify a quadratic bezier curve on first iteration
+			if(angle == 0) {
+				vector += gotoX.toString() + " " + gotoY.toString() + "Q";
+			} else {
+				vector += gotoX.toString() + " " + gotoY.toString() + " ";
+			}
+		}
+		
+		// Draw circle from end back to the start
+		for(var angle = end; angle > start; angle -= step) {
+			
+			// Randomize radius
+			if(Math.random() < 0.5) {
+				r += 0.3 * Math.random();
+			} else {
+				r -= 0.3 * Math.random();
+			}
+			
+			// Calculate next point to draw
+			gotoX = x + r * Math.cos(angle);
+			gotoY = y - r * 0.8 * Math.sin(angle);
+			
+			// Add point to vector string
+			vector += gotoX.toString() + " " + gotoY.toString() + " ";
+		}
+		
+		// Draw vector onto canvas
+		return paper.path(vector + "Z").attr({ "type": "path", "stroke-width": 1, "fill": "black" });
+		
+	}
+}
+
 // Get a specific element from the stack
 function getElementFromStack(elementPar) {
 	
@@ -48,7 +194,7 @@ function getElementFromStack(elementPar) {
 		for(var i = 0;i < elementStack.length;i++) {
 			
 			// If correct element found, return it
-			if(JSON.stringify(elementStack[i].circle.node) === JSON.stringify(elementPar))
+			if(JSON.stringify(elementStack[i].collection[2].node) === JSON.stringify(elementPar))
 			{
 				return elementStack[i];
 			}
@@ -62,56 +208,30 @@ function getElementFromStack(elementPar) {
 }
 
 // Connect two elements with a linear or a bezier curve
-function connect(element1, element2, curve) {
+function connect(element1, element2) {
 	
 	// Get coordinates of the given elements
-	var x1 = element1.getBBox().x + (element1.getBBox().width / 2);
-	var y1 = element1.getBBox().y + (element1.getBBox().height / 2);
-	var x2 = element2.getBBox().x + (element2.getBBox().width / 2);
-	var y2 = element2.getBBox().y + (element2.getBBox().height / 2);
+	var x1 = element1[2].getBBox().x + (element1[2].getBBox().width / 2);
+	var y1 = element1[2].getBBox().y + (element1[2].getBBox().height / 2);
+	var x2 = element2[2].getBBox().x + (element2[2].getBBox().width / 2);
+	var y2 = element2[2].getBBox().y + (element2[2].getBBox().height / 2);
 	
-	// Calculate the distance (vector) between the two objects
-	var diffX = Math.abs(x1 - x2);
-	var diffY = Math.abs(y1 - y2);
+	var v = [x1 - x2, y1 - y2]; 						// Vector
+	var m = Math.sqrt(v[0] * v[0] + v[1] * v[1]);		// Magnitude
+	var u = [v[0] / m, v[1] / m];						// Unit vector
 	
-	// Variables: controlpoint 1 + 2 and midpoints
-	var c1, c2, midpointX, midpointY;
+	var offset = 18;									// Offset to middle point
+	var length = m - offset * 2;						// Real drawing length
 	
-	// Set control points and midpoints
-	if(x1 < x2) {
-		c1 = x1 + (diffX / 2) * 0.8;
-		c2 = x2 - (diffX / 2) * 0.8;
-		midpointX = (diffX / 2) + x1;
-	}
-	else
-	{
-		c1 = x1 - (diffX / 2) * 0.8;
-		c2 = x2 + (diffX / 2) * 0.8;
-		midpointX = (diffX / 2) + x2;
-	}
+	var startX = x1 - u[0] * offset;
+	var startY = y1 - u[1] * offset;
 	
-	if(y1 < y2) {
-		midpointY = (diffY / 2) + y1;
-	}
-	else
-	{
-		midpointY = (diffY / 2) + y2;
-	}
-	
-	// Create a string with the path parameters for Raphaël
-	var pathString = "M " + x1.toString() + " " + y1.toString();
-	pathString += " Q " + c1.toString() + " " + y1.toString();
-	pathString += " " + midpointX.toString() + " " + midpointY.toString();
-	pathString += " " + c2.toString() + " " + y2.toString();
-	pathString += " " + x2.toString() + " " + y2.toString();
-	
-	// Create path
-	var path = paper.path(pathString);
-	path.toBack();
-	path.attr({ "stroke": "#fff", "stroke-width": 3});
+	var endX = startX - u[0] * length;
+	var endY = startY - u[1] * length;
 	
 	// Return path
-	return path;
+	return logConnection(startX, startY, endX, endY);
+	
 }
 
 // Get history element
@@ -152,87 +272,78 @@ function drawElement(element, disable) {
 	// Element does not exist in stack?
 	if(canvasObj === false) {
 		
-		// Creates history element circle
-		var cir = paper.circle(parseInt(element.x), parseInt(element.y), 6);
+		var eCollection = [];
 		
-		// Create different circle when it should be disabled
-		if(!disable) {
-			cir.attr({
-				"stroke": "#bce1ff",
-				"stroke-width": 1.5,
-				"fill": "r(0.5, 0.5)#0a46ca-#2b6bd2-#67b9e9",
-			});
-		} else {
-			cir.attr({
-				"stroke": "#a9a9a9",
-				"stroke-width": 1.5,
-				"fill": "r(0.5, 0.5)#3a3a3a-#6d6d6d-#ababab",
-			});
+		// Creates history element circle
+		var cir = logCircle(parseInt(element.x), parseInt(element.y));
+		var cross1 = logConnection(parseInt(element.x) + 10, parseInt(element.y) + 10, parseInt(element.x) - 10, parseInt(element.y) - 10);
+		var cross2 = logConnection(parseInt(element.x) + 10, parseInt(element.y) - 10, parseInt(element.x) - 10, parseInt(element.y) + 10);
+		var cross = paper.set();
+		cross.push(cross1, cross2);
+		var cirMO = paper.circle(parseInt(element.x), parseInt(element.y), 20);
+		
+		// Make mouseover circle transparent
+		cirMO.attr({ "stroke": "none", "fill": "#FFFFFF", "fill-opacity": 0.0 });
+		
+		// Hide cross if disabled element
+		if(disable) {
+			cross.hide();
 		}
 		
 		// Creates history element description
-		var box = paper.rect(parseInt(element.x), parseInt(element.y) + 14, 200, 34, 4);
-		box.attr({
-			"stroke": "#d0d0d0",
-			"stroke-width": 2,
-			"fill": "90-#0a46ca-#3980ff",
-			});
+		var text = paper.text(1100, 364, element.description);
+		text.attr({"font-family": "Talking To The Moon", "font-size": 30, "text-anchor": "end"});
+		text.hide();
 		
-		var text = paper.text(parseInt(element.x) + 10, parseInt(element.y) + 30, element.description);
-		text.attr({"font": "Arial", "font-size": 14, "fill": "#fff", "text-anchor": "start"});
-		
-		// Group
-		var desc = paper.set();
-		desc.push(box, text);
-		desc.hide();
+		// Pack into collection
+		eCollection[0] = cir;
+		eCollection[1] = cross;
+		eCollection[2] = cirMO;
+		eCollection[3] = text;
 		
 		// Add to element stack
-		elementStack.push({ id: element.id, circle: cir, description: desc });
+		elementStack.push({ id: element.id, collection: eCollection });
 		
 		// Create mouseover event
 		if(!disable) {
 			
-			cir.node.onmouseover = function() {
-				getElementFromStack(this).description.show();
+			eCollection[2].node.onmouseover = function() {
+				getElementFromStack(this).collection[3].show();
 				$("#history").css('cursor', 'help');
 			};
-			cir.node.onmouseout = function() {
-				getElementFromStack(this).description.hide();
+			eCollection[2].node.onmouseout = function() {
+				getElementFromStack(this).collection[3].hide();
 				$("#history").css('cursor', 'auto');
 			};
 			
 		}
 		
-		// Return circle object
-		return cir;
+		// Return collection
+		return eCollection;
 	
 	} else {
 		
 		// Edit element from stack
 		
 		// Reset all events
-		canvasObj.circle.node.onmouseover = null;
-		canvasObj.circle.node.onmouseout = null;
+		canvasObj.collection[2].node.onmouseover = null;
+		canvasObj.collection[2].node.onmouseout = null;
 		
-		// Edit circle
-		canvasObj.circle.attr({
-			"stroke": "#bce1ff",
-			"stroke-width": 1.5,
-			"fill": "r(0.5, 0.5)#0a46ca-#2b6bd2-#67b9e9",
-		});
+		// Unhide cross
+		canvasObj.collection[1].show();
 		
 		// Create mouseover event
-		canvasObj.circle.node.onmouseover = function() {
-			getElementFromStack(this).description.show();
+		canvasObj.collection[2].node.onmouseover = function() {
+			getElementFromStack(this).collection[3].show();
 			$("#history").css('cursor', 'help');
 		};
-		canvasObj.circle.node.onmouseout = function() {
-			getElementFromStack(this).description.hide();
+		canvasObj.collection[2].node.onmouseout = function() {
+			getElementFromStack(this).collection[3].hide();
 			$("#history").css('cursor', 'auto');
 		};
 		
-		// Return null
-		return canvasObj.circle;
+		// Return circle object
+		return canvasObj.collection;
 		
 	}
 	
@@ -319,45 +430,6 @@ function addAllElements() {
 					
 				})(tempElement);
 				
-				/*
-				// Draw connected elements
-				for(var j = 0;j < allElements[i].connections.length;j++) {
-					
-					
-					
-					// Get each element by its id and draw it to the paper
-					getElement(allElements[i].connections[j], false, function(element) {
-						
-						// Does this element exist?
-						if(element != "none") {
-							
-							// Draw it and connect it
-							connect(tempElement, drawElement(element, true));
-							
-						}
-						
-					});
-					//alert(allElements[i].connections[j]);
-				}
-				
-				$.each(allElements[i].connections, function(i, object) {
-					
-					// Get each element by its id and draw it to the paper
-					getElement(object, false, function(element) {
-						
-						// Does this element exist?
-						if(element != "none") {
-							
-							// Draw it and connect it
-							connect(tempElement, drawElement(element, true));
-							
-						} else { alert(allElements[i].id); }
-						
-					});
-					
-				});
-				*/
-				
 			}
 			
 		}
@@ -372,7 +444,7 @@ function initHistory() {
 	// Check if canvas is already drawed
 	if(typeof paper == 'undefined') {
 		
-		paper = new Raphael(document.getElementById('history'), 1024, 512);
+		paper = new Raphael(document.getElementById('history'), 1200, 800);
 		addAllElements();
 		
 	} else {
@@ -381,4 +453,17 @@ function initHistory() {
 		
 	}
 	
+	// Set current cross to red color
+	for(var i = 0;i < elementStack.length;i++)
+	{
+		if(elementStack[i].id == currentSet) {
+			
+			elementStack[i].collection[1].attr({ "stroke": "#AA0000", "fill": "#AA0000" });
+			
+		} else {
+		
+			elementStack[i].collection[1].attr({ "stroke": "black", "fill": "black" });
+			
+		}
+	}
 }
