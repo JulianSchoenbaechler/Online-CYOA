@@ -486,3 +486,27 @@ div#history {
 	background-position: center;
 	background-repeat: no-repeat;
 }
+.bg-outside {
+	background-image: url('img/outside.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.bg-corridor {
+	background-image: url('img/corridor.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.bg-office {
+	background-image: url('img/office.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.bg-cabin {
+	background-image: url('img/cabin.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
