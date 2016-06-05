@@ -145,6 +145,23 @@
 
 
 
+/* FONT: TALKING TO THE MOON */
+
+/* Regular */
+@font-face {
+	font-family: 'Talking To The Moon';
+	
+	src: url('fonts/TalkingToTheMoon_webfont.eot');
+	src: url('fonts/TalkingToTheMoon_webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/TalkingToTheMoon_webfont.woff') format('woff'),
+		 url('fonts/TalkingToTheMoon_webfont.ttf') format('truetype'),
+		 url('fonts/TalkingToTheMoon_webfont.svg#TalkingToTheMoonRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
 /* HTML ELEMENTS */
 
 /* top elements */
@@ -223,8 +240,7 @@ div#wrapper {
 	margin: 0 auto;
 	opacity: 0.0;
 }
-div#wrapper.library
-{
+div#wrapper.library {
 	min-width: 58%;
 	max-width: 58%;
 }
@@ -334,7 +350,7 @@ div#textWrap.bookshelf {
 	max-width: calc(100% - 60px);
 }
 div#text {
-	overflow: scroll;
+	overflow: auto;
 	max-height: inherit;
 }
 div#text p {
@@ -383,6 +399,39 @@ div#answers a div.answer:active,
 div#answers a div.answer:hover {
 	background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
+}
+div#tree {
+	position: fixed;
+	top: 200px;
+	left: 0;
+	width: 148px;
+	height: 220px;
+	min-width: 148px;
+	min-height: 220px;
+	cursor: pointer;
+	background-image: url('img/tree.png');
+	background-size: auto 220px;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 99;
+}
+div#historyWrap {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.6);
+	z-index: 100;
+}
+div#history {
+	width: 1200px;
+	margin: 20px auto;
+	background-image: url('img/history.png');
+	background-size: 1200px auto;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 /* misc */

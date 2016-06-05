@@ -53,6 +53,20 @@ function layout() {
 			
 	}
 	
+	// History-tree click event
+	$("#tree").click(function() {
+		
+		$("#historyWrap").show();
+		
+	});
+	
+	// History click event
+	$("#history").click(function() {
+		
+		$("#historyWrap").hide();
+		
+	});
+	
 	// Library click event
 	$("#character1.library").click(function(e) {
 		
