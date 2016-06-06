@@ -108,6 +108,8 @@ function layout() {
 				if(($.inArray(bookPasswords[0], bookCombination) !== -1) &&
 				   ($.inArray(bookPasswords[1], bookCombination) !== -1))
 				{
+					paper.clear();
+					startID = "bookshelfZ1";
 					gotoFragment("bookshelfZ1");
 				}
 				
@@ -115,6 +117,8 @@ function layout() {
 				else if(($.inArray(bookPasswords[2], bookCombination) !== -1) &&
 						($.inArray(bookPasswords[3], bookCombination) !== -1))
 				{
+					paper.clear();
+					startID = "bookshelfZ2";
 					gotoFragment("bookshelfZ2");
 				}
 				
@@ -128,6 +132,8 @@ function layout() {
 				   ($.inArray(bookPasswords[5], bookCombination) !== -1) &&
 				   ($.inArray(bookPasswords[6], bookCombination) !== -1))
 				{
+					paper.clear();
+					startID = "bookshelfZ3";
 					gotoFragment("bookshelfZ3");
 				}
 				
