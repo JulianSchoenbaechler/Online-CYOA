@@ -74,7 +74,7 @@ function setAmbientSound(ambient) {
 	if(typeof ambient === 'string') {
 		
 		// Check if ambient sound should be 'badday'
-		if((ambient == 'radio') && (datasets > 1)) {
+		if((ambient == 'radio') && (datasets > 5)) {
 			
 			ambient = 'badday';
 			
