@@ -21,6 +21,7 @@ var debugString = "";
 var debugTimer;
 var datasets = 1;
 var currentSet = "";
+var lastSet = "prolog1";
 var currentTemplate = "";
 
 // Evaluate received story fragment
@@ -93,6 +94,7 @@ function evaluateFragment(fragment, callback) {
 		});
 		
 		// Update current set
+		lastSet = currentSet;
 		currentSet = fragment.id;
 	
 	}
@@ -107,12 +109,28 @@ function evaluateFragment(fragment, callback) {
 // Player has clicked an answer / option
 function gotoFragment(answerID) {
 	
-	$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+	if(answerID != "back") {
+		
+		// Go to given fragment
+		$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+		
+			// Callback
+			evaluateFragment(fragment, layout);
+		
+		}, "json");
 	
-		// Callback
-		evaluateFragment(fragment, layout);
+	} else {
+		
+		// Go to previous fragment
+		$.post("php/game.php", { task: "answer", id: lastSet }, function(fragment) {
+		
+			// Callback
+			evaluateFragment(fragment, layout);
+		
+		}, "json");
+		
+	}
 	
-	}, "json");
 	datasets++;
 	
 }
