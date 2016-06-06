@@ -109,7 +109,7 @@ function layout() {
 				   ($.inArray(bookPasswords[1], bookCombination) !== -1))
 				{
 					paper.clear();
-					startID = "bookshelfZ1";
+					startID = "79";
 					gotoFragment("bookshelfZ1");
 				}
 				
@@ -118,7 +118,7 @@ function layout() {
 						($.inArray(bookPasswords[3], bookCombination) !== -1))
 				{
 					paper.clear();
-					startID = "bookshelfZ2";
+					startID = "87";
 					gotoFragment("bookshelfZ2");
 				}
 				
@@ -133,7 +133,7 @@ function layout() {
 				   ($.inArray(bookPasswords[6], bookCombination) !== -1))
 				{
 					paper.clear();
-					startID = "bookshelfZ3";
+					startID = "96";
 					gotoFragment("bookshelfZ3");
 				}
 				
