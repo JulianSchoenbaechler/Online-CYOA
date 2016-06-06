@@ -109,25 +109,38 @@ function evaluateFragment(fragment, callback) {
 // Player has clicked an answer / option
 function gotoFragment(answerID) {
 	
-	if(answerID != "back") {
+	// Resolve answerID
+	switch(answerID) {
 		
-		// Go to given fragment
-		$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+		case "back":
+			
+			// Go to previous fragment
+			$.post("php/game.php", { task: "answer", id: lastSet }, function(fragment) {
+			
+				// Callback
+				evaluateFragment(fragment, layout);
+			
+			}, "json");
+			
+			break;
 		
-			// Callback
-			evaluateFragment(fragment, layout);
+		case "end":
+			
+			// Finish game
+			window.location.assign("index.html");
+			break;
 		
-		}, "json");
-	
-	} else {
-		
-		// Go to previous fragment
-		$.post("php/game.php", { task: "answer", id: lastSet }, function(fragment) {
-		
-			// Callback
-			evaluateFragment(fragment, layout);
-		
-		}, "json");
+		default:
+			
+			// Go to given fragment
+			$.post("php/game.php", { task: "answer", id: answerID.toString() }, function(fragment) {
+			
+				// Callback
+				evaluateFragment(fragment, layout);
+			
+			}, "json");
+			
+			break;
 		
 	}
 	
