@@ -127,7 +127,13 @@ function gotoFragment(answerID) {
 		case "end":
 			
 			// Finish game
-			window.location.assign("index.html");
+			$.post("php/game.php", { task: "finish" }, function() {
+			
+				// Callback
+				window.location.assign("index.html");
+			
+			});
+			
 			break;
 		
 		default:

@@ -296,6 +296,19 @@
 					
 					break;
 				
+				// Client finishes the game
+				case 'finish':
+					$id = SessionController::getSessionID();
+					
+					// Delete player in DB
+					$dc->deleteRow('player', array('id' => $id));
+					
+					// Destroy session
+					SessionController::destroySession();
+					
+					echo 'end';
+					break;
+				
 				default:
 					break;
 			}
