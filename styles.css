@@ -447,6 +447,7 @@ div#answers a div.answer:hover {
     background-color: rgba(0, 0, 0, 0.9);
 }
 div#tree {
+	display: none;
 	position: fixed;
 	top: 200px;
 	left: 0;

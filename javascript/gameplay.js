@@ -96,6 +96,11 @@ function evaluateFragment(fragment, callback) {
 		// Update current set
 		lastSet = currentSet;
 		currentSet = fragment.id;
+		
+		// Story-tree active?
+		if(!currentSet.startsWith('prolog') && ($("#tree").is(":visible") == false)) {
+			$("#tree").show();
+		}
 	
 	}
 	else
