@@ -216,6 +216,53 @@
 				return null;
 			}
 		}
+		
+		// Delete a specific row
+		public function deleteRow($table, $conditions = array())
+		{
+			// Check table name
+			if(!is_string($table))
+			{
+				trigger_error("[DatabaseController] 'deleteRow' expected argument 0 to be string.", E_USER_WARNING);
+			}
+			else
+			{
+				$table = mysqli_real_escape_string($this->link, $table);
+			}
+			
+			$sql = "DELETE FROM `$table` WHERE ";
+			
+			// For every condition
+			foreach($conditions as $column => $value)
+			{
+				// Define columns to insert
+				$element = mysqli_real_escape_string($this->link, $column);
+				$sql .= "`$element`=";
+				
+				// Is the value a string or an integer?
+				if(is_string($value))
+				{
+					$element = mysqli_real_escape_string($this->link, $value);
+					$sql .= "'$element' AND ";
+				}
+				else
+				{
+					$sql .= (string)$value." AND ";
+				}
+			}
+			
+			// Strip 'AND' from query
+			$sql = substr($sql, 0, strlen($sql) - 5);
+			
+			// Check result
+			if(!mysqli_query($this->link, $sql))
+			{
+				printf("MYSQL: Error %s\n", mysqli_error($this->link));
+				return false;
+			}
+			
+			return true;
+		}
 	}
 	
 ?>
