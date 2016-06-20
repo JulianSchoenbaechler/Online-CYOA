@@ -27,6 +27,7 @@ var ambientSound = {
 				volume: 0
 			}),
 	playing: 0,
+	fading: false,
 	last: "none"
 };
 var overlaySounds = [];
@@ -80,53 +81,67 @@ function setAmbientSound(ambient) {
 			
 		}
 		
-		// Ambient is not currently playing?
-		if (ambientSound.last != ambient) {
+		// No fading active?
+		if(!ambientSound.fading) {
 			
-			// Which channel is active?
-			if(!ambientSound.playing) {
-				// 0
+			// Ambient is not currently playing?
+			if(ambientSound.last != ambient) {
 				
-				// Choose: no sound?
-				if(ambient != 'none') {
+				// Which channel is active?
+				if(!ambientSound.playing) {
+					// 0
+						
+					// Choose: no sound?
+					if(ambient != 'none') {
+						
+						ambientSound.channel2 = new buzz.sound('sound/' + ambient + '.mp3', {
+							loop: true,
+							volume: 0
+						});
+						
+						// Fade in new sound
+						ambientSound.channel2.play().fadeIn(2000);
+					}
 					
-					ambientSound.channel2 = new buzz.sound('sound/' + ambient + '.mp3', {
-						loop: true,
-						volume: 0
+					// Fade current ambient out
+					ambientSound.fading = true;
+					ambientSound.channel1.unloop().fadeOut(2000, function() {
+						
+						ambientSound.channel1.stop();
+						ambientSound.fading = false;
+						
 					});
-					ambientSound.channel2.play().fadeIn(2000);
+					
+				} else {
+					// 1
+						
+					// Choose: no sound?
+					if(ambient != 'none') {
+						
+						ambientSound.channel1 = new buzz.sound('sound/' + ambient + '.mp3', {
+							loop: true,
+							volume: 0
+						});
+						
+						// Fade in new sound
+						ambientSound.channel1.play().fadeIn(2000);
+					}
+					
+					// Fade current ambient out
+					ambientSound.fading = true;
+					ambientSound.channel2.unloop().fadeOut(2000, function() {
+						
+						ambientSound.channel2.stop();
+						ambientSound.fading = false;
+						
+					});
+					
 				}
 				
-				// Fade current ambient out
-				ambientSound.channel1.unloop().fadeOut(2000, function() {
-					
-					ambientSound.channel1.stop();
-					
-				});
-				
-			} else {
-				// 1
-				
-				// Choose: no sound?
-				if(ambient != 'none') {
-					
-					ambientSound.channel1 = new buzz.sound('sound/' + ambient + '.mp3', {
-						loop: true,
-						volume: 0
-					});
-					ambientSound.channel1.play().fadeIn(2000);
-				}
-				
-				// Fade current ambient out
-				ambientSound.channel2.unloop().fadeOut(2000, function() {
-					
-					ambientSound.channel2.stop();
-					
-				});
+				ambientSound.last = ambient;
+				ambientSound.playing ^= 1;
+			
 			}
-			
-			ambientSound.last = ambient;
-			ambientSound.playing ^= 1;
 		
 		}
 		
