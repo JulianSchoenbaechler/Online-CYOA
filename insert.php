@@ -85,7 +85,7 @@
 			$character1 = $row['character1'];
 			$character2 = $row['character2'];
 			$ambient = $row['ambient'];
-			$ambient = $row['template'];
+			$template = $row['template'];
 			
 			mysqli_free_result($result);
 		}
