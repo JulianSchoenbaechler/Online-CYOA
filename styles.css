@@ -328,6 +328,7 @@ div#character2 img {
 div#rightShelf {
 	display: inline-block;
 	position: absolute;
+	right: 0;
 	min-width: 40%;
 	max-width: 40%;
 	min-height: inherit;
